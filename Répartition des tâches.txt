@@ -1,5 +1,16 @@
 ﻿deux personnes sur les interfaces et les intéractions (view)
 
+Aymeric et Bassam
+
 deux personnes sur le coté model/controler
 
-test modif
+Jordan et Sene
+
+En cours : 
+ 
+NIVEAU INTERFACE : 
+
+Connexion
+Inscription
+MenuPrincipal
+ParametragePartie
