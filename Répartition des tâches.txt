@@ -1,3 +1,0 @@
-﻿deux personnes sur les interfaces et les intéractions (view)
-
-deux personnes sur le coté model/controler
