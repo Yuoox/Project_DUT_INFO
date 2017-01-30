@@ -1,58 +1,188 @@
 package Model;
 
-import com.modeliosoft.modelio.javadesigner.annotations.objid;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
 
-@objid ("540b8af8-a737-4b2b-9d77-9335754f9d00")
-public class Joueur {
-    @objid ("becc1880-44cd-438d-b838-c7c73497287e")
-    public Integer idJoueur;
+import View.MenuPrincipal;
+import View.main;
 
-    @objid ("dcf77b8b-f8f7-4a0b-8c56-fa61fdd8933b")
-    public String nom;
+public class Joueur implements Serializable{
 
-    @objid ("2e018a41-c61f-418f-a9cf-dab55c0f45d8")
-    public boolean actif;
+	private int idJoueur ;
+	private String nom ;
+	private String mdp ;
+	private boolean actif ;
+	
+	
+	public Joueur(int idJoueur, String nom, String mdp, boolean actif)
+	{
+		this.idJoueur = idJoueur ;
+		this.nom = nom ;
+		this.mdp = mdp ;
+		this.actif = actif ;
+	}
 
-    @objid ("6d52fac0-d6ce-4f6a-98a5-338a6d63db11")
-    public Joueur(Integer idJoueur, String nom, boolean actif) {
-        super();
-        this.idJoueur = idJoueur;
-        this.nom = nom;
-        this.actif = actif;
-    }
+	public int getIdJoueur() {
+		return idJoueur;
+	}
 
-    @objid ("5d4d848c-a01b-45c7-bb80-2c9428554caf")
-    public Integer getIdJoueur() {
-        return idJoueur;
-    }
+	public void setIdJoueur(int idJoueur) {
+		this.idJoueur = idJoueur;
+	}
 
-    @objid ("748374ec-2de9-4ecc-af98-701f17b03e41")
-    public void setIdJoueur(Integer idJoueur) {
-        this.idJoueur = idJoueur;
-    }
+	public String getNom() {
+		return nom;
+	}
 
-    @objid ("94f04583-e79f-4666-8089-4356a40994e2")
-    public String getNom() {
-        return nom;
-    }
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
 
-    @objid ("31c856ea-0131-4e4f-a82f-f6c60f4db03f")
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
+	public String getMdp() {
+		return mdp;
+	}
 
-    @objid ("4bdb23c8-57aa-4348-95d7-5b8882a279ab")
-    public boolean isActif() {
-        return actif;
-    }
+	public void setMdp(String mdp) {
+		this.mdp = mdp;
+	}
 
-    @objid ("3d945f37-554e-4986-b7da-699b5684f415")
-    public void setActif(boolean actif) {
-        this.actif = actif;
-    }
+	public boolean isActif() {
+		return actif;
+	}
 
-    @objid ("81b27145-e8ef-4b20-8592-36c292c31b07")
-    public void checkCase() {
-    }
+	public void setActif(boolean actif) {
+		this.actif = actif;
+	}
+	
+	public static int ajouter_joueur(String pseudo, String mdp)
+	{
+		if(pseudo.equals("") && mdp.equals(""))
+			return 0 ;
+		else if(pseudo.equals(""))
+			return 1 ;
+		else if(mdp.equals(""))
+			return 2 ;
+		else
+			{
+				if(Joueur.trouver_joueur(pseudo)!=null)
+					return 3 ;
+				int index_joueurs = -1 ;
+				if(!main.liste_joueurs.isEmpty())
+					index_joueurs = main.liste_joueurs.get(main.liste_joueurs.size()-1).getIdJoueur();
+				else
+					index_joueurs = 0 ;
 
+				Joueur j = new Joueur(index_joueurs,pseudo,mdp,false);
+				main.liste_joueurs.add(j);
+				Joueur.sauvegarder(main.liste_joueurs);
+				return 4;
+			}
+	}
+	
+	public static Joueur trouver_joueur(String pseudo)
+	{
+		for(int i=0;i<main.liste_joueurs.size();i++)
+		{
+			Joueur j = main.liste_joueurs.get(i);
+			if(j.nom.equals(pseudo))
+				return j ;
+
+		}
+		return null ;
+	}
+	
+	public static void sauvegarder(ArrayList<Joueur> liste_joueur)
+	{
+		ObjectOutputStream oos = null;
+		try {
+			final FileOutputStream fichier = new FileOutputStream("utilisateurs.ca");
+		    oos = new ObjectOutputStream(fichier);
+		    oos.writeObject(liste_joueur);
+		    oos.flush();
+		} catch (final java.io.IOException e) {
+		      e.printStackTrace();
+		} finally {
+			try {
+				if (oos != null) {
+		          oos.flush();
+		          oos.close();
+		        }
+		      } catch (final IOException ex) {
+		        ex.printStackTrace();
+		      }
+		    }
+	}
+	
+	public static ArrayList<Joueur> lire()
+	{
+	    ObjectInputStream ois = null;
+	    try{
+	    	final FileInputStream fichier = new FileInputStream("utilisateurs.ca");
+	    	ois = new ObjectInputStream(fichier);
+		    ArrayList<Joueur> liste_joueur = extracted(ois);
+		    return liste_joueur ;
+	    } catch (final IOException e) {
+	    	e.printStackTrace();
+	    } catch (final ClassNotFoundException e) {
+	    	e.printStackTrace();
+	    } finally {
+	    	try {
+	    		if (ois != null) {
+	    			ois.close();
+	    		}
+	    	} catch (final IOException ex) {
+	    		ex.printStackTrace();
+	      }
+	    }
+		return null;
+	}
+
+	private static ArrayList<Joueur> extracted(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+		return (ArrayList<Joueur>) ois.readObject();
+	}
+	
+	public static int connexion_joueur(String pseudo,String mdp)
+	{
+		if(pseudo.equals("") && mdp.equals(""))
+			return 0 ;
+		else if(pseudo.equals(""))
+			return 1 ;
+		else if(mdp.equals(""))
+			return 2 ;
+		else
+			{
+				if(Joueur.trouver_joueur(pseudo) ==null)
+					return 3 ;
+				else
+					{
+						Joueur j = Joueur.trouver_joueur(pseudo) ;
+						if(j.getMdp().equals(mdp))
+						{
+							main.joueur_actif = j ;
+							main.connected = true ;
+							return 4 ;
+						}
+						else
+							return 5 ;
+					}
+		}
+	}
+	 
+	 public static void main(String[] args)
+	 {
+		 ArrayList<Joueur> liste = new ArrayList<Joueur>();
+		 Joueur j = new Joueur(1,"wizou","123456",false);
+		 Joueur j1 = new Joueur(2,"wizou12","123",false);
+		 
+		 liste.add(j);
+		 liste.add(j1);
+		 
+		 sauvegarder(liste);
+		 lire();
+	 }
 }
