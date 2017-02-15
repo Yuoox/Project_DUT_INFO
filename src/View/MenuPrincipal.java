@@ -28,12 +28,16 @@ import java.awt.Image;
 
 public class MenuPrincipal extends JFrame {
 
+	private JLabel label_accueil ;
+	private JLabel label_a_propos ;
+	private JLabel label_r_accueil ;
+	
 	private JPanel contentPane;
-	private JButton button_creer_partie ;
-	private JButton button_charger_partie ;
-	private JButton button_regles ;
-	private JButton button_q1, button_q2, button_q3, bouton_a_propos,button_accueil ;
-	private JButton button_deconnecter ;
+	private JButton bouton_creer_partie ;
+	private JButton bouton_charger_partie ;
+	private JButton bouton_regles ;
+	private JButton bouton_a_propos,button_accueil ;
+	private JButton bouton_deconnecter ;
 	private Controller controleur ;
 
 	/**
@@ -70,180 +74,127 @@ public class MenuPrincipal extends JFrame {
 	 */
 	public MenuPrincipal() {
 		controleur = new Controller(this);
+		setLocation(0,0);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 600);
+		setBounds(100, 100, 1920, 1080);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblMenuCatane = new JLabel("Bienvenue sur Catane");
-		lblMenuCatane.setHorizontalAlignment(SwingConstants.CENTER);
-		//label_inscription.setForeground(new Color(255,255,255));
-		lblMenuCatane.setFont(new Font("Sitka Subheading", Font.PLAIN, 30));
-		lblMenuCatane.setBounds(12, 180, 758, 64);
-		contentPane.add(lblMenuCatane);
+		label_accueil = new JLabel("Menu");
+		label_accueil.setForeground(Color.white);
+		label_accueil.setHorizontalAlignment(SwingConstants.CENTER);
+		label_accueil.setFont(new Font("Gabriola", Font.PLAIN, 60));
+		label_accueil.setBounds(760, 350, 400, 90);
+		contentPane.add(label_accueil);
+
+		label_r_accueil = new JLabel("Accueil");
+		label_r_accueil.setHorizontalAlignment(SwingConstants.CENTER);
+		label_r_accueil.setForeground(Color.WHITE);
+		label_r_accueil.addMouseListener(controleur);
+		label_r_accueil.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
+		label_r_accueil.setBounds(1710, 13, 180, 90);
+		contentPane.add(label_r_accueil);
 		
-		button_creer_partie = new JButton("Cr\u00E9er une partie");
-		button_creer_partie.setBounds(277, 290, 164, 25);
-		button_creer_partie.addActionListener(controleur);
-		button_creer_partie.setBackground(Color.WHITE);
-		button_creer_partie.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		contentPane.add(button_creer_partie);
+		label_a_propos = new JLabel("A propos");
+		label_a_propos.setForeground(Color.white);
+		label_a_propos.addMouseListener(controleur);
+		label_a_propos.setHorizontalAlignment(SwingConstants.CENTER);
+		label_a_propos.setBounds(1710, 930, 180, 90);
+		label_a_propos.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
+		contentPane.add(label_a_propos);
 		
-		button_charger_partie = new JButton("Charger une partie");
-		button_charger_partie.setBounds(277, 328, 164, 25);
-		button_charger_partie.addActionListener(controleur);
-		button_charger_partie.setBackground(Color.WHITE);
-		button_charger_partie.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		contentPane.add(button_charger_partie);
+		bouton_creer_partie = new JButton("Cr\u00E9er une partie");
+		bouton_creer_partie.setBounds(880, 490, 160, 60);
+		bouton_creer_partie.addActionListener(controleur);
+		bouton_creer_partie.setBackground(Color.WHITE);
+		bouton_creer_partie.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
+		contentPane.add(bouton_creer_partie);
 		
-		button_regles = new JButton("R\u00E8gles et aides");
-		button_regles.setBounds(277, 365, 164, 25);
-		button_regles.addActionListener(controleur);
-		button_regles.setBackground(Color.WHITE);
-		button_regles.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		contentPane.add(button_regles);
+		bouton_charger_partie = new JButton("Charger une partie");
+		bouton_charger_partie.setBounds(880, 563, 160, 60);
+		bouton_charger_partie.addActionListener(controleur);
+		bouton_charger_partie.setBackground(Color.WHITE);
+		bouton_charger_partie.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
+		contentPane.add(bouton_charger_partie);
 		
-		button_q1 = new JButton("?");
-		button_q1.setBounds(465, 290, 50, 25);
-		button_q1.addActionListener(controleur);
-		button_q1.setBackground(Color.WHITE);
-		button_q1.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		contentPane.add(button_q1);
-		
-		button_q2 = new JButton("?");
-		button_q2.setBounds(465, 328, 50, 25);
-		contentPane.add(button_q2);
-		button_q2.setBackground(Color.WHITE);
-		button_q2.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		button_q2.addActionListener(controleur);
-		
-		button_q3 = new JButton("?");
-		button_q3.setBounds(465, 365, 50, 25);
-		button_q3.addActionListener(controleur);
-		button_q3.setBackground(Color.WHITE);
-		button_q3.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		contentPane.add(button_q3);
+		bouton_regles = new JButton("R\u00E8gles et aides");
+		bouton_regles.setBounds(880, 636, 160, 60);
+		bouton_regles.addActionListener(controleur);
+		bouton_regles.setBackground(Color.WHITE);
+		bouton_regles.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
+		contentPane.add(bouton_regles);
 		
 		if(main.joueur_actif!=null)
 		{	
 		JLabel lblConnectSous = new JLabel("Connect\u00E9 sous "+ main.joueur_actif.getNom());
-		lblConnectSous.setBounds(585, 237, 185, 16);
+		lblConnectSous.setHorizontalAlignment(SwingConstants.CENTER);
+		lblConnectSous.setBounds(1368, 434, 232, 29);
 		//lblConnectSous.setText(lblConnectSous.getText() + main.joueur_actif.getNom());
 		contentPane.add(lblConnectSous);
 		}
 		
-		button_deconnecter = new JButton("Se d\u00E9connecter");
-		button_deconnecter.setBounds(620, 263, 136, 25);
-		button_deconnecter.addActionListener(controleur);
-		button_deconnecter.setBackground(Color.WHITE);
-		button_deconnecter.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		contentPane.add(button_deconnecter);
-		
-		bouton_a_propos = new JButton("A propos ...");
-		bouton_a_propos.setBounds(660, 515, 110, 25);
-		contentPane.add(bouton_a_propos);
-		bouton_a_propos.setBackground(Color.WHITE);
-		bouton_a_propos.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		bouton_a_propos.addActionListener(controleur);
-		
-		button_accueil = new JButton("Accueil");
-		button_accueil.setBounds(657, 25, 97, 25);
-		button_accueil.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		button_accueil.setBackground(Color.WHITE);
-		button_accueil.addActionListener(controleur);
-		contentPane.add(button_accueil);
-		
-		ImageIcon imageIcon = new ImageIcon(".\\colon-de-catane.jpg");
-		imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(790,590,Image.SCALE_DEFAULT));
+		bouton_deconnecter = new JButton("Se d\u00E9connecter");
+		bouton_deconnecter.setBounds(1440, 476, 160, 60);
+		bouton_deconnecter.addActionListener(controleur);
+		bouton_deconnecter.setBackground(Color.WHITE);
+		bouton_deconnecter.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
+		contentPane.add(bouton_deconnecter);
+				
+		ImageIcon imageIcon = new ImageIcon(".\\catane-2.jpg");
+		imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(1920,1080,Image.SCALE_DEFAULT));
 		contentPane.setLayout(null);
 		
 		JLabel lblTes = new JLabel("");
 		lblTes.setLayout(new BorderLayout());
-		lblTes.setMaximumSize(new Dimension(790, 590));
+		lblTes.setMaximumSize(new Dimension(1920, 1080));
 		lblTes.setForeground(UIManager.getColor("Button.disabledShadow"));
 		lblTes.setBackground(UIManager.getColor("Button.disabledShadow"));
 		lblTes.setIcon(imageIcon);
 		contentPane.add(lblTes);
-		lblTes.setBounds(0, 0, 780, 550);
+		lblTes.setBounds(0, 0, 1920, 1080);
 		
-
-	}
-/*
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		if(e.getSource().equals(button_creer_partie))
-		{
-			this.setVisible(false);
-			Parametrage_partie.main(null);
-		}
-			
-		// test bouton question debut
-		if(e.getSource().equals(button_q1))
-			JOptionPane.showMessageDialog(this,"Vous pouvez créer une nouvelle partie de Catane et la sauvegarder ensuite.","Créer une nouvelle partie", JOptionPane.INFORMATION_MESSAGE);
-		if(e.getSource().equals(button_q2))
-			JOptionPane.showMessageDialog(this,"Vous pouvez charger une partie sauvegardée sur votre ordinateur de Catane.","Charger une partie", JOptionPane.INFORMATION_MESSAGE);
-		if(e.getSource().equals(button_q3))
-			JOptionPane.showMessageDialog(this,"Vous pouvez consulter les règles du jeu catane.","Consulter les règles de Catane", JOptionPane.INFORMATION_MESSAGE);
-		if(e.getSource().equals(button_deconnecter))
-			main.connected = false ;
 		
-		// test bouton question fin
-	}*/
-
-
-
-	public JButton getButton_creer_partie() {
-		return button_creer_partie;
 	}
-
-
-
-	public JButton getButton_charger_partie() {
-		return button_charger_partie;
-	}
-
-
-
-	public JButton getButton_regles() {
-		return button_regles;
-	}
-
-
-
-	public JButton getButton_q1() {
-		return button_q1;
-	}
-
-
-
-	public JButton getButton_q2() {
-		return button_q2;
-	}
-
-
-
-	public JButton getButton_q3() {
-		return button_q3;
-	}
-
-
 
 	public JButton getBouton_a_propos() {
 		return bouton_a_propos;
 	}
 
-
-
 	public JButton getButton_accueil() {
 		return button_accueil;
 	}
 
+	public JLabel getLabel_a_propos() {
+		return label_a_propos;
+	}
 
+	public void setLabel_a_propos(JLabel label_a_propos) {
+		this.label_a_propos = label_a_propos;
+	}
 
-	public JButton getButton_deconnecter() {
-		return button_deconnecter;
+	public JLabel getLabel_r_accueil() {
+		return label_r_accueil;
+	}
+
+	public void setLabel_r_accueil(JLabel label_r_accueil) {
+		this.label_r_accueil = label_r_accueil;
+	}
+
+	public JButton getBouton_creer_partie() {
+		return bouton_creer_partie;
+	}
+
+	public JButton getBouton_charger_partie() {
+		return bouton_charger_partie;
+	}
+
+	public JButton getBouton_regles() {
+		return bouton_regles;
+	}
+
+	public JButton getBouton_deconnecter() {
+		return bouton_deconnecter;
 	}
 }

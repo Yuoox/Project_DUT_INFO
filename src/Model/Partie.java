@@ -11,20 +11,22 @@ public class Partie {
     public Integer nbCases;
 
     @objid ("5642bfe6-1f87-4f9f-b878-4dc4df67bc19")
-    public String nbJoueur;
+    public Integer nbJoueur;
 
     @objid ("f6580126-2d9d-4a55-b147-ae84a56a1b7e")
     public int tour;
+    
+    public Integer niveau_IA ;
 
     @objid ("62dc3ee3-628f-4d9e-8021-74c64e79ea09")
     public void initPartie() {
     }
 
     @objid ("404ad5cc-66fb-4346-b0d9-b42a3b82f1b3")
-    public Partie(Integer nbCartes, Integer nbCases) {
+    public Partie(Integer nbJoueurs, Integer niv_IA) {
         super();
-        this.nbCartes = nbCartes;
-        this.nbCases = nbCases;
+        this.nbJoueur = nbJoueurs;
+        this.niveau_IA = niv_IA;
     }
 
     @objid ("566927eb-7636-4ef3-a598-dd043944eb03")
