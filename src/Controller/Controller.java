@@ -1,45 +1,31 @@
 package Controller;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 
 import Model.Joueur;
-import Model.Partie;
 import View.Accueil;
 import View.Informations;
 import View.Inscription;
 import View.MenuPrincipal;
 import View.Parametrage_partie;
-import View.Plateau;
 import View.connexion;
 import View.main ;
 
-public class Controller implements ActionListener,ItemListener,MouseListener {
+public class Controller implements ActionListener,ItemListener {
 
 	public connexion vue_connexion ;
 	public Inscription vue_inscription ;
 	public MenuPrincipal vue_menu ;
 	public Parametrage_partie vue_parametrage ;
 	public Accueil vue_accueil ;
-	public Plateau vue_plateau ;
-	
-	private int [] tabx = new int[50];
-    private int [] taby = new int[50];
-    private int points = 1 ;
 	
 	public Controller(connexion vue_connexion)
 	{
@@ -92,17 +78,6 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 		
 	}
 	
-	public Controller(Plateau vue_plateau)
-	{
-		super();
-		this.vue_plateau = vue_plateau;
-		this.vue_accueil = null ;
-		this.vue_connexion = null;
-		this.vue_inscription = null;
-		this.vue_menu = null;
-		this.vue_parametrage = null;
-		
-	}
 	public Controller(connexion vue_connexion, Inscription vue_inscription, MenuPrincipal vue_menu,
 			Parametrage_partie vue_parametrage, Accueil vue_accueil) {
 		super();
@@ -153,29 +128,30 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 		return false ;
 	}
 	
-	public boolean creer_partie(String IA, String nb_joueurs)
-	{
-		if(main.p!=null) return false ;
-		else
-		{
-			int niv_IA = -1 ;
-			switch(IA)
-			{
-			case "Facile" : niv_IA = 1 ;
-			case "Moyen" : niv_IA = 2 ;
-			case "Difficile" : niv_IA = 3 ;
-			}
-			int nb_j = Integer.parseInt(nb_joueurs);
-			Partie p = new Partie(nb_j,niv_IA);
-			main.p = p ;
-			return true ;
-		}
-	}
-	
 
 	@Override
 	public void actionPerformed (ActionEvent e) {
 		// TODO Auto-generated method stub
+		if(this.vue_accueil !=null)
+		{
+			if(e.getSource().equals(vue_accueil.getBouton_connexion()))
+			{
+				vue_accueil.setVisible(false);
+				connexion.main(null);
+			}
+			
+			if(e.getSource().equals(vue_accueil.getBouton_a_propos()))
+			{
+				Informations.main(null);
+			}
+			
+			
+			if(e.getSource().equals(vue_accueil.getBouton_inscription()))
+			{
+				vue_accueil.setVisible(false);
+				Inscription.main(null);
+			}
+		}
 		
 		if(this.vue_connexion !=null)
 		{
@@ -197,20 +173,37 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 					MenuPrincipal.main(null);
 				}
 			}
+			
+			if(e.getSource().equals(this.vue_connexion.getBouton_accueil()))
+			{
+				vue_connexion.setVisible(false);
+				Accueil.main(null);
+			}
+			
+			if(e.getSource().equals(this.vue_connexion.getBouton_a_propos()))
+			{
+				Informations.main(null);
+			}
+			
 		}
 		// ICI ON CONTROLE LES ACTIONS DES BOUTONS DE L'INTERFACE "Incription"
 		if(this.vue_inscription !=null)
 		{
-			if(e.getSource().equals(this.vue_inscription.getBouton_deja_inscrit()))
+			if(e.getSource().equals(this.vue_inscription.getButton_deja_inscrit()))
 			{
 				vue_inscription.setVisible(false);
 				connexion.main(null);
 			}
-			if(e.getSource().equals(this.vue_inscription.getBouton_inscrire()))
+			if(e.getSource().equals(this.vue_inscription.getButton_accueil()))
 			{
-				String pseudo = vue_inscription.getChamp_pseudo().getText();
-				String mdp = vue_inscription.getChamp_mdp().getText();
-				String mdp2 = vue_inscription.getChamp_c_mdp().getText();
+				vue_inscription.setVisible(false);
+				Accueil.main(null);
+			}
+			if(e.getSource().equals(this.vue_inscription.getButton_inscrire()))
+			{
+				String pseudo = vue_inscription.getTextfield_pseudo().getText();
+				String mdp = vue_inscription.getTextfield_mdp().getText();
+				String mdp2 = vue_inscription.getTextfield_mdp_2().getText();
 				if(mdp.equals(mdp2))
 				{
 					if(this.ajouter_nouveau_joueur(pseudo, mdp))
@@ -227,31 +220,49 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 				}
 					
 			}
+			if(e.getSource().equals(this.vue_inscription.getBouton_a_propos()))
+			{
+				Informations.main(null);
+			}
 		}
 		if(this.vue_menu!=null)
 		{
-			if(e.getSource().equals(this.vue_menu.getBouton_deconnecter()))
+			if(e.getSource().equals(this.vue_menu.getButton_deconnecter()))
 			{
 				main.connected = false;
 				main.joueur_actif = null ;
 				this.vue_menu.setVisible(false);
 				Accueil.main(null);
 			}
-			if(e.getSource().equals(this.vue_menu.getBouton_creer_partie()))
+			if(e.getSource().equals(this.vue_menu.getBouton_a_propos()))
+			{
+				Informations.main(null);
+			}
+			if(e.getSource().equals(this.vue_menu.getButton_accueil()))
+			{
+				JOptionPane.showMessageDialog(this.vue_inscription, "Vous êtes déjà sur le l'accueil en mode connecté !","Erreur !!", JOptionPane.ERROR_MESSAGE);
+			}
+			if(e.getSource().equals(this.vue_menu.getButton_creer_partie()))
 			{
 				this.vue_menu.setVisible(false);
 				Parametrage_partie.main(null);
 			}
+			if(e.getSource().equals(this.vue_menu.getButton_q1()))
+				JOptionPane.showMessageDialog(this.vue_menu,"Vous pouvez créer une nouvelle partie de Catane et la sauvegarder ensuite.","Créer une nouvelle partie", JOptionPane.INFORMATION_MESSAGE);
+			if(e.getSource().equals(this.vue_menu.getButton_q2()))
+				JOptionPane.showMessageDialog(this.vue_menu,"Vous pouvez charger une partie sauvegardée sur votre ordinateur de Catane.","Charger une partie", JOptionPane.INFORMATION_MESSAGE);
+			if(e.getSource().equals(this.vue_menu.getButton_q3()))
+				JOptionPane.showMessageDialog(this.vue_menu,"Vous pouvez consulter les règles du jeu catane.","Consulter les règles de Catane", JOptionPane.INFORMATION_MESSAGE);
+
 		}
-		/*if(this.vue_parametrage!=null)
+		if(this.vue_parametrage!=null)
 		{
-			if(e.getSource().equals(this.vue_parametrage.getBouton_creer_partie()))
+			if(e.getSource().equals(this.vue_parametrage.getButton_accueil()))
 			{
-				//String niv_IA = this.vue_parametrage.getComboBox();
-			//	String nb_joueurs = 
-				//creer_partie(nb_joueurs, niv_IA);
+				this.vue_parametrage.setVisible(false);
+				MenuPrincipal.main(null);
 			}
-		}*/
+		}
 	}
 
 	@Override
@@ -259,9 +270,9 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 		// TODO Auto-generated method stub
 		if(this.vue_parametrage!=null)
 		{
-			if(arg0.getSource().equals(this.vue_parametrage.getCombo_couleur()))
+			if(arg0.getSource().equals(this.vue_parametrage.getComboBox()))
 			{
-				switch(this.vue_parametrage.getCombo_couleur().getSelectedIndex())
+				switch(this.vue_parametrage.getComboBox().getSelectedIndex())
 				{
 				case 0 : this.vue_parametrage.mise_a_jour_textpane(Color.ORANGE);break ;
 				case 1 : this.vue_parametrage.mise_a_jour_textpane(Color.RED);break ;
@@ -273,326 +284,6 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 				}
 			}
 		}
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		if(this.vue_accueil!=null)
-		{
-			if(e.getSource().equals(this.vue_accueil.getLabel_a_propos()))
-			{
-				Informations.main(null);
-			}
-			if(e.getSource().equals(this.vue_accueil.getLabel_connexion()))
-			{
-				vue_accueil.setVisible(false);
-				connexion.main(null);
-			}
-			if(e.getSource().equals(this.vue_accueil.getLabel_inscription()))
-			{
-				vue_accueil.setVisible(false);
-				Inscription.main(null);
-			}
-		}
-		if(this.vue_connexion!=null)
-		{
-			if(e.getSource().equals(this.vue_connexion.getLabel_a_propos()))
-			{
-				Informations.main(null);
-			}
-			if(e.getSource().equals(this.vue_connexion.getLabel_r_accueil()))
-			{
-				this.vue_connexion.setVisible(false);
-				Accueil.main(null);
-			}
-		}
-		
-		if(this.vue_inscription!=null)
-		{
-			if(e.getSource().equals(this.vue_inscription.getLabel_a_propos()))
-			{
-				Informations.main(null);
-			}
-			if(e.getSource().equals(this.vue_inscription.getLabel_r_accueil()))
-			{
-				Accueil.main(null);
-			}
-		}
-		
-		if(this.vue_menu!=null)
-		{
-			if(e.getSource().equals(this.vue_menu.getLabel_a_propos()))
-			{
-				Informations.main(null);
-			}
-			if(e.getSource().equals(this.vue_menu.getLabel_r_accueil()))
-			{
-				Accueil.main(null);
-			}
-		}
-		if(this.vue_parametrage!=null)
-		{
-			if(e.getSource().equals(this.vue_parametrage.getLabel_a_propos()))
-			{
-				Informations.main(null);
-			}
-			if(e.getSource().equals(this.vue_parametrage.getLabel_r_accueil()))
-			{
-				Accueil.main(null);
-			}
-		}
-		if(this.vue_plateau!=null)
-		{
-			if(e.getSource().equals(this.vue_plateau.getLabel_fond()))
-			{
-                System.out.println("position xs x : " + e.getX() + ", position y : " + e.getY());
-                Graphics2D g = (Graphics2D) this.vue_plateau.getLabel_fond().getGraphics();
-                
-                if(points>0)
-                {
-			        //if((e.getModifiers()&InputEvent.BUTTON1_MASK)!=0){    
-			        	//System.out.println("cc 1");
-			            tabx [points]= e.getX();                                                      
-			            taby [points] = e.getY();  
-			           // System.out.println("position x : " + e.getX() + ", position y : " + e.getY());
-			            g.drawOval(e.getX(),e.getY(), 5, 5);  															
-			            if (tabx.length%2==0)
-			            {               
-			            	//System.out.println("cc 2");
-			            	if((tabx[points-1]-10 <= 266 && tabx[points-1]+10 >= 266 )
-			            		&& (taby[points-1]-10 <= 173 && taby[points-1]+10 >= 173)
-			            		&& (tabx[points]-10 <= 330 && tabx[points]+10 >=330 )
-			            		&& (taby[points]-10 <= 133 && taby[points]+10 >= 133 )
-			            		)
-			            	{
-			            		//System.out.println("cc 2");
-				            	g.setPaint(Color.BLUE);
-				                g.setStroke(new BasicStroke(8));
-				               // g.drawLine(tabx [points-1],taby [points-1]+20, tabx [points], taby [points]+20);
-				                g.drawLine(266,177, 330, 133);
-			                }
-			                points++ ;
-			            }
-			            g.dispose();
-			       // }
-                }
-			}
-		}
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		if(this.vue_accueil!=null)
-		{
-			if(e.getSource().equals(this.vue_accueil.getLabel_a_propos()))
-			{
-				JLabel label_t = this.vue_accueil.getLabel_a_propos() ;
-				label_t.setForeground(new Color(204, 51, 0));
-				label_t.setFont(new Font("Sitka Subheading", Font.BOLD, 35));
-				this.vue_accueil.setLabel_a_propos(label_t);
-			}
-			
-			if(e.getSource().equals(this.vue_accueil.getLabel_connexion()))
-			{
-				JLabel label_t = this.vue_accueil.getLabel_connexion() ;
-				label_t.setForeground(new Color(204, 51, 0));
-				label_t.setFont(new Font("Sitka Subheading", Font.BOLD, 35));
-				this.vue_accueil.setLabel_connexion(label_t);
-			}
-			
-			if(e.getSource().equals(this.vue_accueil.getLabel_inscription()))
-			{
-				JLabel label_t = this.vue_accueil.getLabel_inscription() ;
-				label_t.setForeground(new Color(204, 51, 0));
-				label_t.setFont(new Font("Sitka Subheading", Font.BOLD, 35));
-				this.vue_accueil.setLabel_inscription(label_t);
-			}
-		}
-		if(this.vue_connexion!=null)
-		{
-			if(e.getSource().equals(this.vue_connexion.getLabel_a_propos()))
-			{
-				JLabel label_t = this.vue_connexion.getLabel_a_propos() ;
-				label_t.setForeground(new Color(204, 51, 0));
-				label_t.setFont(new Font("Sitka Subheading", Font.BOLD, 35));
-				this.vue_connexion.setLabel_a_propos(label_t);
-			}
-			if(e.getSource().equals(this.vue_connexion.getLabel_r_accueil()))
-			{
-				JLabel label_t = this.vue_connexion.getLabel_r_accueil() ;
-				label_t.setForeground(new Color(204, 51, 0));
-				label_t.setFont(new Font("Sitka Subheading", Font.BOLD, 35));
-				this.vue_connexion.setLabel_r_accueil(label_t);
-			}
-			
-		}
-		
-		if(this.vue_inscription!=null)
-		{
-			if(e.getSource().equals(this.vue_inscription.getLabel_a_propos()))
-			{
-				JLabel label_t = this.vue_inscription.getLabel_a_propos() ;
-				label_t.setForeground(new Color(204, 51, 0));
-				label_t.setFont(new Font("Sitka Subheading", Font.BOLD, 35));
-				this.vue_inscription.setLabel_a_propos(label_t);
-			}
-			if(e.getSource().equals(this.vue_inscription.getLabel_r_accueil()))
-			{
-				JLabel label_t = this.vue_inscription.getLabel_r_accueil() ;
-				label_t.setForeground(new Color(204, 51, 0));
-				label_t.setFont(new Font("Sitka Subheading", Font.BOLD, 35));
-				this.vue_inscription.setLabel_r_accueil(label_t);
-			}
-		}
-		
-		if(this.vue_menu!=null)
-		{
-			if(e.getSource().equals(this.vue_menu.getLabel_a_propos()))
-			{
-				JLabel label_t = this.vue_menu.getLabel_a_propos() ;
-				label_t.setForeground(new Color(204, 51, 0));
-				label_t.setFont(new Font("Sitka Subheading", Font.BOLD, 35));
-				this.vue_menu.setLabel_a_propos(label_t);
-			}
-			if(e.getSource().equals(this.vue_menu.getLabel_r_accueil()))
-			{
-				JLabel label_t = this.vue_menu.getLabel_r_accueil() ;
-				label_t.setForeground(new Color(204, 51, 0));
-				label_t.setFont(new Font("Sitka Subheading", Font.BOLD, 35));
-				this.vue_menu.setLabel_r_accueil(label_t);
-			}
-		}
-		if(this.vue_parametrage!=null)
-		{
-			if(e.getSource().equals(this.vue_parametrage.getLabel_a_propos()))
-			{
-				JLabel label_t = this.vue_parametrage.getLabel_a_propos() ;
-				label_t.setForeground(new Color(204, 51, 0));
-				label_t.setFont(new Font("Sitka Subheading", Font.BOLD, 35));
-				this.vue_parametrage.setLabel_a_propos(label_t);
-			}
-			if(e.getSource().equals(this.vue_parametrage.getLabel_r_accueil()))
-			{
-				JLabel label_t = this.vue_parametrage.getLabel_r_accueil() ;
-				label_t.setForeground(new Color(204, 51, 0));
-				label_t.setFont(new Font("Sitka Subheading", Font.BOLD, 35));
-				this.vue_parametrage.setLabel_r_accueil(label_t);
-			}
-		}
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		
-		// TODO Auto-generated method stub
-		if(this.vue_accueil!=null)
-		{
-			if(e.getSource().equals(this.vue_accueil.getLabel_a_propos()))
-			{
-				JLabel label_t = this.vue_accueil.getLabel_a_propos() ;
-				label_t.setForeground(Color.WHITE);
-				label_t.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
-				this.vue_accueil.setLabel_a_propos(label_t);
-			}
-			if(e.getSource().equals(this.vue_accueil.getLabel_connexion()))
-			{
-				JLabel label_t = this.vue_accueil.getLabel_connexion() ;
-				label_t.setForeground(Color.WHITE);
-				label_t.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
-				this.vue_accueil.setLabel_connexion(label_t);
-			}
-			if(e.getSource().equals(this.vue_accueil.getLabel_inscription()))
-			{
-				JLabel label_t = this.vue_accueil.getLabel_inscription() ;
-				label_t.setForeground(Color.WHITE);
-				label_t.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
-				this.vue_accueil.setLabel_inscription(label_t);
-			}
-		}
-		if(this.vue_connexion!=null)
-		{
-			if(e.getSource().equals(this.vue_connexion.getLabel_a_propos()))
-			{
-				JLabel label_t = this.vue_connexion.getLabel_a_propos() ;
-				label_t.setForeground(Color.WHITE);
-				label_t.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
-				this.vue_connexion.setLabel_a_propos(label_t);
-			}
-			if(e.getSource().equals(this.vue_connexion.getLabel_r_accueil()))
-			{
-				JLabel label_t = this.vue_connexion.getLabel_r_accueil() ;
-				label_t.setForeground(Color.WHITE);
-				label_t.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
-				this.vue_connexion.setLabel_r_accueil(label_t);
-			}
-		}
-		if(this.vue_inscription!=null)
-		{
-			if(e.getSource().equals(this.vue_inscription.getLabel_a_propos()))
-			{
-				JLabel label_t = this.vue_inscription.getLabel_a_propos() ;
-				label_t.setForeground(Color.WHITE);
-				label_t.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
-				this.vue_inscription.setLabel_a_propos(label_t);
-			}
-			if(e.getSource().equals(this.vue_inscription.getLabel_r_accueil()))
-			{
-				JLabel label_t = this.vue_inscription.getLabel_r_accueil() ;
-				label_t.setForeground(Color.WHITE);
-				label_t.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
-				this.vue_inscription.setLabel_r_accueil(label_t);
-			}
-		}
-		if(this.vue_menu!=null)
-		{
-			if(e.getSource().equals(this.vue_menu.getLabel_a_propos()))
-			{
-				JLabel label_t = this.vue_menu.getLabel_a_propos() ;
-				label_t.setForeground(Color.WHITE);
-				label_t.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
-				this.vue_menu.setLabel_a_propos(label_t);
-			}
-			if(e.getSource().equals(this.vue_menu.getLabel_r_accueil()))
-			{
-				JLabel label_t = this.vue_menu.getLabel_r_accueil() ;
-				label_t.setForeground(Color.WHITE);
-				label_t.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
-				this.vue_menu.setLabel_r_accueil(label_t);
-			}
-		}
-		
-		if(this.vue_parametrage!=null)
-		{
-			if(e.getSource().equals(this.vue_parametrage.getLabel_a_propos()))
-			{
-				JLabel label_t = this.vue_parametrage.getLabel_a_propos() ;
-				label_t.setForeground(Color.WHITE);
-				label_t.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
-				this.vue_parametrage.setLabel_a_propos(label_t);
-			}
-			if(e.getSource().equals(this.vue_parametrage.getLabel_r_accueil()))
-			{
-				JLabel label_t = this.vue_parametrage.getLabel_r_accueil() ;
-				label_t.setForeground(Color.WHITE);
-				label_t.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
-				this.vue_parametrage.setLabel_r_accueil(label_t);
-			}
-		}
-
 	}
 
 }
