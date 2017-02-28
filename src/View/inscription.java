@@ -29,13 +29,21 @@ import java.awt.SystemColor;
 
 public class Inscription extends JFrame{
 
+	
+	private JLabel label_accueil ;
+	private JLabel label_a_propos ;
+	private JLabel label_pseudo ;
+	private JLabel label_mdp ;
+	private JLabel label_r_accueil ;
+	
+	
 	private JPanel contentPane;
-	private JTextField textfield_pseudo;
-	private JTextField textfield_mdp;
-	private JTextField textfield_mdp_2;
-	private JButton button_inscrire ; 
+	private JTextField champ_pseudo;
+	private JTextField champ_mdp;
+	private JTextField champ_c_mdp;
+	private JButton bouton_inscrire ; 
 	private JLabel lblTest;
-	private JButton button_deja_inscrit, button_accueil, bouton_a_propos ;
+	private JButton bouton_deja_inscrit ;
 	private JLabel lblTest_1;
 	
 	private Controller controleur ;
@@ -62,143 +70,154 @@ public class Inscription extends JFrame{
 	 */
 	public Inscription() {
 		controleur = new Controller(this);
-
 		setForeground(SystemColor.controlText);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 600);
+		setBounds(100, 100, 1920, 1080);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-	//	this.setContentPane(new Container());
 		setContentPane(contentPane);
+		setLocationRelativeTo(null);
 		
-		JLabel label_inscription = new JLabel("Inscription");
-		label_inscription.setHorizontalAlignment(SwingConstants.CENTER);
-		//label_inscription.setForeground(new Color(255,255,255));
-		label_inscription.setFont(new Font("Sitka Subheading", Font.PLAIN, 30));
-		label_inscription.setBounds(12, 180, 758, 64);
-		contentPane.add(label_inscription);
+		label_accueil = new JLabel("Inscription");
+		label_accueil.setForeground(Color.white);
+		label_accueil.setHorizontalAlignment(SwingConstants.CENTER);
+		label_accueil.setFont(new Font("Gabriola", Font.PLAIN, 60));
+		label_accueil.setBounds(760, 350, 400, 90);
+		contentPane.add(label_accueil);
 		
-		JLabel lblNewLabel = new JLabel("Pseudo");
-		//lblNewLabel.setForeground(new Color(255,255,255));
-		lblNewLabel.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		lblNewLabel.setBounds(196, 289, 56, 16);
-		contentPane.add(lblNewLabel);
+		label_a_propos = new JLabel("A propos");
+		label_a_propos.setForeground(Color.white);
+		label_a_propos.addMouseListener(controleur);
+		label_a_propos.setHorizontalAlignment(SwingConstants.CENTER);
+		label_a_propos.setBounds(1710, 930, 180, 90);
+		label_a_propos.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
+		contentPane.add(label_a_propos);
 		
-		JLabel lblMotDePasse = new JLabel("Mot de passe");
+		label_r_accueil = new JLabel("Accueil");
+		label_r_accueil.setHorizontalAlignment(SwingConstants.CENTER);
+		label_r_accueil.setForeground(Color.WHITE);
+		label_r_accueil.addMouseListener(controleur);
+		label_r_accueil.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
+		label_r_accueil.setBounds(1710, 13, 180, 90);
+		contentPane.add(label_r_accueil);
+		
+		JLabel label_pseudo = new JLabel("Pseudo");
+		label_pseudo.setHorizontalAlignment(SwingConstants.CENTER);
+		label_pseudo.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
+		label_pseudo.setBounds(770, 453, 180, 90);
+		contentPane.add(label_pseudo);
+		
+		JLabel label_mot_de_passe = new JLabel("Mot de passe");
+		label_mot_de_passe.setHorizontalAlignment(SwingConstants.CENTER);
 		//lblMotDePasse.setForeground(new Color(255,255,255));
-		lblMotDePasse.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		lblMotDePasse.setBounds(196, 324, 92, 16);
-		contentPane.add(lblMotDePasse);
+		label_mot_de_passe.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
+		label_mot_de_passe.setBounds(770, 520, 180, 90);
+		contentPane.add(label_mot_de_passe);
 		
-		JLabel label_mdp2 = new JLabel("Confirmer mot de passe");
+		JLabel label_c_mot_de_passe = new JLabel("Confirmer mot de passe");
+		label_c_mot_de_passe.setHorizontalAlignment(SwingConstants.CENTER);
 		//label_mdp2.setForeground(new Color(255,255,255));
-		label_mdp2.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		label_mdp2.setBounds(196, 359, 179, 16);
-		contentPane.add(label_mdp2);
+		label_c_mot_de_passe.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
+		label_c_mot_de_passe.setBounds(770, 587, 180, 90);
+		contentPane.add(label_c_mot_de_passe);
 		
-		textfield_pseudo = new JTextField();
-		textfield_pseudo.setForeground(new Color(255,0,0));
-		textfield_pseudo.setBounds(401, 282, 116, 22);
-		textfield_pseudo.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		contentPane.add(textfield_pseudo);
-		textfield_pseudo.setColumns(10);
+		champ_pseudo = new JTextField();
+		champ_pseudo.setForeground(new Color(255,0,0));
+		champ_pseudo.setBounds(1000, 469, 165, 55);
+		champ_pseudo.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
+		contentPane.add(champ_pseudo);
+		champ_pseudo.setColumns(10);
 		
-		textfield_mdp = new JPasswordField();
-		textfield_mdp.setForeground(new Color(255,0,0));
-		textfield_mdp.setBounds(401, 317, 116, 22);
-		textfield_mdp.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		contentPane.add(textfield_mdp);
-		textfield_mdp.setColumns(10);
+		champ_mdp = new JPasswordField();
+		champ_mdp.setForeground(new Color(255,0,0));
+		champ_mdp.setBounds(1000, 537, 165, 55);
+		champ_mdp.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
+		contentPane.add(champ_mdp);
+		champ_mdp.setColumns(10);
 		
-		textfield_mdp_2 = new JPasswordField();
-		textfield_mdp_2.setForeground(new Color(255,0,0));
-		textfield_mdp_2.setBounds(401, 352, 116, 22);
-		textfield_mdp_2.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		contentPane.add(textfield_mdp_2);
-		textfield_mdp_2.setColumns(10);
+		champ_c_mdp = new JPasswordField();
+		champ_c_mdp.setForeground(new Color(255,0,0));
+		champ_c_mdp.setBounds(1000, 605, 165, 55);
+		champ_c_mdp.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
+		contentPane.add(champ_c_mdp);
+		champ_c_mdp.setColumns(10);
 		
-		button_inscrire = new JButton("S'inscrire");
-		button_inscrire.setBounds(400, 419, 97, 25);
-		button_inscrire.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		button_inscrire.setBackground(Color.WHITE);
-		button_inscrire.addActionListener(controleur);
-		contentPane.add(button_inscrire);
+		bouton_inscrire = new JButton("S'inscrire");
+		bouton_inscrire.setBounds(1063, 735, 160, 60);
+		bouton_inscrire.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
+		bouton_inscrire.setBackground(Color.WHITE);
+		bouton_inscrire.addActionListener(controleur);
+		contentPane.add(bouton_inscrire);
 		
-		button_accueil = new JButton("Accueil");
-		button_accueil.setBounds(657, 25, 97, 25);
-		button_accueil.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		button_accueil.setBackground(Color.WHITE);
-		button_accueil.addActionListener(controleur);
-		contentPane.add(button_accueil);
+		bouton_deja_inscrit = new JButton("D\u00E9j\u00E0 inscrit ?");
+		bouton_deja_inscrit.addActionListener(controleur);
+		bouton_deja_inscrit.setBounds(1248, 735, 160, 60);
+		bouton_deja_inscrit.setBackground(Color.WHITE);
+		bouton_deja_inscrit.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
+		contentPane.add(bouton_deja_inscrit);
 		
-		button_deja_inscrit = new JButton("D\u00E9j\u00E0 inscrit ?");
-		button_deja_inscrit.addActionListener(controleur);
-		button_deja_inscrit.setBounds(525, 419, 142, 25);
-		button_deja_inscrit.setBackground(Color.WHITE);
-		button_deja_inscrit.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		contentPane.add(button_deja_inscrit);
-		
-		bouton_a_propos = new JButton("A propos ...");
-		bouton_a_propos.setBounds(660, 515, 110, 25);
-		contentPane.add(bouton_a_propos);
-		bouton_a_propos.setBackground(Color.WHITE);
-		bouton_a_propos.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		bouton_a_propos.addActionListener(controleur);
-		
-		ImageIcon imageIcon = new ImageIcon(".\\colon-de-catane.jpg");
-		imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(790,590,Image.SCALE_DEFAULT));
+		ImageIcon imageIcon = new ImageIcon(".\\catane-2.jpg");
+		imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(1920,1080,Image.SCALE_DEFAULT));
 		contentPane.setLayout(null);
 		
 		lblTest = new JLabel("");
-		lblTest.setBounds(12, 393, 758, 16);
 		lblTest.setForeground(Color.WHITE);
-		lblTest.setFont(new Font("Sitka Subheading", Font.PLAIN, 20));
-		lblTest.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTest.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTest.setBounds(710, 683, 758, 28);
+		lblTest.setHorizontalAlignment(JLabel.CENTER);
 		contentPane.add(lblTest);
 		
 		JLabel lblTes = new JLabel("");
 		lblTes.setLayout(new BorderLayout());
-		lblTes.setMaximumSize(new Dimension(790, 590));
+		lblTes.setMaximumSize(new Dimension(1920, 1080));
 		lblTes.setForeground(UIManager.getColor("Button.disabledShadow"));
 		lblTes.setBackground(UIManager.getColor("Button.disabledShadow"));
 		lblTes.setIcon(imageIcon);
 		contentPane.add(lblTes);
-		lblTes.setBounds(0, 0, 780, 550);
+		lblTes.setBounds(0, 0, 1920, 1080);
 		
 		
 		 
-	}
-
-	public JTextField getTextfield_pseudo() {
-		return textfield_pseudo;
-	}
-
-	public JTextField getTextfield_mdp() {
-		return textfield_mdp;
-	}
-
-	public JTextField getTextfield_mdp_2() {
-		return textfield_mdp_2;
-	}
-
-	public JButton getButton_inscrire() {
-		return button_inscrire;
-	}
-
-	public JButton getButton_deja_inscrit() {
-		return button_deja_inscrit;
-	}
-
-	public JButton getButton_accueil() {
-		return button_accueil;
-	}
-
-	public JButton getBouton_a_propos() {
-		return bouton_a_propos;
 	}
 	
 	public void mise_a_jour_label(String s)
 	{
 		lblTest.setText(s);
+	}
+
+	public JLabel getLabel_a_propos() {
+		return label_a_propos;
+	}
+
+	public void setLabel_a_propos(JLabel label_a_propos) {
+		this.label_a_propos = label_a_propos;
+	}
+
+	public JLabel getLabel_r_accueil() {
+		return label_r_accueil;
+	}
+
+	public void setLabel_r_accueil(JLabel label_r_accueil) {
+		this.label_r_accueil = label_r_accueil;
+	}
+
+	public JTextField getChamp_pseudo() {
+		return champ_pseudo;
+	}
+
+	public JTextField getChamp_mdp() {
+		return champ_mdp;
+	}
+
+	public JTextField getChamp_c_mdp() {
+		return champ_c_mdp;
+	}
+
+	public JButton getBouton_inscrire() {
+		return bouton_inscrire;
+	}
+
+	public JButton getBouton_deja_inscrit() {
+		return bouton_deja_inscrit;
 	}
 }

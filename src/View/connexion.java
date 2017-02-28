@@ -33,15 +33,25 @@ public class connexion extends JFrame {
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private JLabel label_accueil ;
+	private JLabel label_a_propos ;
+	private JLabel label_pseudo ;
+	private JLabel label_mdp ;
+	private JLabel label_r_accueil ;
 	
 	private JPanel contentPane;
-	private JTextField textfield_pseudo;
-	private JTextField textfield_mdp;
+	private JTextField champ_pseudo;
+	private JTextField champ_mdp;
 	
 	public JButton bouton_connexion ;
 	private JLabel label_erreur;
-	private JButton bouton_inscription,bouton_accueil,bouton_a_propos;
+	private JButton bouton_inscription;
 	private Controller controleur ;
+	private JLabel label_accueil_1;
 
 	/**
 	 * Launch the application.
@@ -67,143 +77,108 @@ public class connexion extends JFrame {
 		controleur = new Controller(this);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 600);
+		setBounds(100, 100, 1920, 1080);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setLocationRelativeTo(null);
 		
-		JLabel label_connexion = new JLabel("Connexion");
-		label_connexion.setHorizontalAlignment(SwingConstants.CENTER);
-		//label_inscription.setForeground(new Color(255,255,255));
-		label_connexion.setFont(new Font("Sitka Subheading", Font.PLAIN, 30));
-		label_connexion.setBounds(12, 180, 758, 64);
-		contentPane.add(label_connexion);
+		label_accueil = new JLabel("Connexion");
+		label_accueil.setForeground(Color.white);
+		label_accueil.setHorizontalAlignment(SwingConstants.CENTER);
+		label_accueil.setFont(new Font("Gabriola", Font.PLAIN, 60));
+		label_accueil.setBounds(760, 350, 400, 90);
+		contentPane.add(label_accueil);
 		
-		JLabel label_pseudo = new JLabel("Pseudo");
-		label_pseudo.setBounds(196, 310, 56, 16);
+		label_a_propos = new JLabel("A propos");
+		label_a_propos.setForeground(Color.white);
+		label_a_propos.addMouseListener(controleur);
+		label_a_propos.setHorizontalAlignment(SwingConstants.CENTER);
+		label_a_propos.setBounds(1710, 930, 180, 90);
+		label_a_propos.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
+		contentPane.add(label_a_propos);
+		
+		label_pseudo = new JLabel("Pseudo");
+		label_pseudo.setForeground(Color.white);
+		label_pseudo.setHorizontalAlignment(SwingConstants.CENTER);
+		label_pseudo.setBounds(700, 490, 180, 90);
+		label_pseudo.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
 		contentPane.add(label_pseudo);
 		
-		JLabel label_mdp = new JLabel("mot de passe");
-		label_mdp.setBounds(196, 355, 92, 16);
+		label_mdp = new JLabel("Mot de passe");
+		label_mdp.setForeground(Color.white);
+		label_mdp.setHorizontalAlignment(SwingConstants.CENTER);
+		label_mdp.setBounds(700, 580, 180, 90);
+		label_mdp.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
 		contentPane.add(label_mdp);
 		
-		textfield_pseudo = new JTextField();
-		textfield_pseudo.setBounds(401, 310, 116, 22);
-		contentPane.add(textfield_pseudo);
-		textfield_pseudo.setColumns(10);
+		champ_pseudo = new JTextField();
+		champ_pseudo.setFont(new Font("Tahoma", Font.PLAIN, 23));
+		champ_pseudo.setHorizontalAlignment(SwingConstants.CENTER);
+		champ_pseudo.setBounds(1000, 509, 165, 55);
+		contentPane.add(champ_pseudo);
+		champ_pseudo.setColumns(10);
 		
-		textfield_mdp = new JPasswordField();
-		textfield_mdp.setBounds(401, 355, 116, 22);
-		contentPane.add(textfield_mdp);
-		textfield_mdp.setColumns(10);
+		champ_mdp = new JPasswordField();
+		champ_mdp.setHorizontalAlignment(SwingConstants.CENTER);
+		champ_mdp.setFont(new Font("Tahoma", Font.PLAIN, 23));
+		champ_mdp.setBounds(1000, 599, 165, 55);
+		contentPane.add(champ_mdp);
+		champ_mdp.setColumns(10);
+		
+		label_r_accueil = new JLabel("Accueil");
+		label_r_accueil.setHorizontalAlignment(SwingConstants.CENTER);
+		label_r_accueil.setForeground(Color.WHITE);
+		label_r_accueil.addMouseListener(controleur);
+		label_r_accueil.setFont(new Font("Sitka Subheading", Font.PLAIN, 25));
+		label_r_accueil.setBounds(1710, 13, 180, 90);
+		contentPane.add(label_r_accueil);
 		
 		bouton_connexion = new JButton("Connexion");
-		bouton_connexion.setBounds(400, 419, 113, 25);
+		bouton_connexion.setBounds(1125, 724, 160, 60);
 		bouton_connexion.addActionListener(controleur);
 		bouton_connexion.setBackground(Color.WHITE);
 		bouton_connexion.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
 		contentPane.add(bouton_connexion);
 		
 		label_erreur = new JLabel("");
-		label_erreur.setForeground(new Color(255, 69, 0));
-		label_erreur.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		label_erreur.setBounds(12, 393, 758, 16);
+		label_erreur.setForeground(Color.WHITE);
+		label_erreur.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		label_erreur.setBounds(710, 683, 758, 28);
 		label_erreur.setHorizontalAlignment(JLabel.CENTER);
 		contentPane.add(label_erreur);
 		
 		bouton_inscription = new JButton("Inscription");
-		bouton_inscription.setBounds(525, 419, 116, 25);
+		bouton_inscription.setBounds(1335, 724, 160, 60);
 		bouton_inscription.setBackground(Color.WHITE);
 		bouton_inscription.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
 		bouton_inscription.addActionListener(controleur);
 		contentPane.add(bouton_inscription);
 		
-		bouton_accueil = new JButton("Accueil");
-		bouton_accueil.setBounds(657, 25, 97, 25);
-		bouton_accueil.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		bouton_accueil.setBackground(Color.WHITE);
-		bouton_accueil.addActionListener(controleur);
-		contentPane.add(bouton_accueil);
 		
-		bouton_a_propos = new JButton("A propos ...");
-		bouton_a_propos.setBounds(660, 515, 110, 25);
-		contentPane.add(bouton_a_propos);
-		bouton_a_propos.setBackground(Color.WHITE);
-		bouton_a_propos.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
-		bouton_a_propos.addActionListener(controleur);
-		
-		
-		ImageIcon imageIcon = new ImageIcon(".\\colon-de-catane.jpg");
-		imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(790,590,Image.SCALE_DEFAULT));
+		ImageIcon imageIcon = new ImageIcon(".\\catane-2.jpg");
+		imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(1920,1080,Image.SCALE_DEFAULT));
 		contentPane.setLayout(null);
 		
 		JLabel lblTes = new JLabel("");
 		lblTes.setLayout(new BorderLayout());
-		lblTes.setMaximumSize(new Dimension(790, 590));
+		lblTes.setMaximumSize(new Dimension(1920, 1080));
 		lblTes.setForeground(UIManager.getColor("Button.disabledShadow"));
 		lblTes.setBackground(UIManager.getColor("Button.disabledShadow"));
 		lblTes.setIcon(imageIcon);
 		contentPane.add(lblTes);
-		lblTes.setBounds(0, 0, 780, 550);
+		lblTes.setBounds(0, 0, 1920, 1080);
+		
+
 	}
-/*
-	@Override
-	public void actionPerformed(ActionEvent arg0)
-	{
-		// TODO Auto-generated method stub
-		// début listener connexion
-		if(arg0.getSource().equals(button_connexion))
-		{
-			if(textfield_pseudo.getText().equals("") && textfield_mdp.getText().equals(""))
-				label_error.setText("Veuillez saisir votre pseudo et votre mot de passe.");
-			else if(textfield_pseudo.getText().equals(""))
-				label_error.setText("Veuillez saisir votre pseudo.");
-			else if(textfield_mdp.getText().equals(""))
-				label_error.setText("Veuillez saisir votre mot de passe.");
-			else
-			{
-				label_error.setText("");
-				if(Joueur.trouver_joueur(textfield_pseudo.getText()) !=null)
-				{
-					Joueur j = Joueur.trouver_joueur(textfield_pseudo.getText()) ;
-					if(j.getMdp().equals(textfield_mdp.getText()))
-					{
-						JOptionPane.showMessageDialog(this, "Vous êtes maintenant connecté !","Connexion réussie", JOptionPane.INFORMATION_MESSAGE);
-						this.setVisible(false);
-						main.joueur_actif = j ;
-						main.connected = true ;
-						MenuPrincipal.main(null);
-					}
-					else
-						JOptionPane.showMessageDialog(this, "Le mot de passe est invalide.","Erreur de connexion", JOptionPane.INFORMATION_MESSAGE);
-				}
-				else
-					JOptionPane.showMessageDialog(this, "L'utilisateur n'existe pas.","Erreur de connexion", JOptionPane.INFORMATION_MESSAGE);
-			}
-		}
-		//fin listener connexion
-		
-		// debut listener inscription
-		if(arg0.getSource().equals(button_inscription))
-		{
-			this.setVisible(false);
-			Inscription.main(null);
-		}
-		
-		if(arg0.getSource().equals(button_accueil))
-		{
-			this.setVisible(false);
-			Accueil.main(null);
-		}
-	}*/
 
 	public JTextField getTextfield_pseudo() {
-		return textfield_pseudo;
+		return champ_pseudo;
 	}
 
 	public JTextField getTextfield_mdp() {
-		return textfield_mdp;
+		return champ_mdp;
 	}
 
 	public JButton getBouton_connexion() {
@@ -214,10 +189,6 @@ public class connexion extends JFrame {
 		return bouton_inscription;
 	}
 
-	public JButton getBouton_accueil() {
-		return bouton_accueil;
-	}
-	
 	public void mettre_a_jour_label(String s)
 	{
 		label_erreur.setText(s);
@@ -234,8 +205,27 @@ public class connexion extends JFrame {
 		this.controleur = controleur;
 	}
 
-	public JButton getBouton_a_propos() {
-		return bouton_a_propos;
+	public JLabel getLabel_r_accueil() {
+		return label_r_accueil;
 	}
 
+	public void setLabel_r_accueil(JLabel label_r_accueil) {
+		this.label_r_accueil = label_r_accueil;
+	}
+
+	public JTextField getChamp_pseudo() {
+		return champ_pseudo;
+	}
+
+	public JTextField getChamp_mdp() {
+		return champ_mdp;
+	}
+
+	public JLabel getLabel_a_propos() {
+		return label_a_propos;
+	}
+
+	public void setLabel_a_propos(JLabel label_a_propos) {
+		this.label_a_propos = label_a_propos;
+	}
 }
