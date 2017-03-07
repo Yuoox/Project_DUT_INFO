@@ -17,7 +17,7 @@ public class Joueur implements Serializable{
 	private String nom ;
 	private String mdp ;
 	private boolean actif ;
-	
+	private int score;
 	
 	public Joueur(int idJoueur, String nom, String mdp, boolean actif)
 	{
@@ -25,6 +25,15 @@ public class Joueur implements Serializable{
 		this.nom = nom ;
 		this.mdp = mdp ;
 		this.actif = actif ;
+		this.score = 0;
+	}
+	
+	public Joueur(int idJoueur, String nom, boolean actif)
+	{
+		this.idJoueur = idJoueur ;
+		this.nom = nom ;
+		this.actif = actif ;
+		this.score = 0;
 	}
 
 	public int getIdJoueur() {
