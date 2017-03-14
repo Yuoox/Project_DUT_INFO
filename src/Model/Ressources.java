@@ -1,9 +1,11 @@
 package Model;
 
+import java.io.Serializable;
+
 import com.modeliosoft.modelio.javadesigner.annotations.objid;
 
 @objid ("ba938f9d-688a-401d-8014-5f841fbaa790")
-public class Ressources {
+public class Ressources implements Serializable{
     @objid ("b0773b97-21ba-4bd6-9357-6c2ffabae5bb")
     public String nom;
 
@@ -35,6 +37,11 @@ public class Ressources {
     @objid ("9b440314-0067-46b8-b360-6be9b7e97e05")
     public void setNbRess(Integer nbRess) {
         this.nbRess = nbRess;
+    }
+    
+    public void retirer_item()
+    {
+    	this.nbRess -= 1 ;
     }
 
 }

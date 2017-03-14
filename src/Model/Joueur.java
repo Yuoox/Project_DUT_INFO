@@ -1,5 +1,6 @@
 package Model;
 
+import java.awt.Color;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,24 +17,58 @@ public class Joueur implements Serializable{
 	private int idJoueur ;
 	private String nom ;
 	private String mdp ;
+	private Color color ;
 	private boolean actif ;
-	private int score;
+	private ArrayList<Ressources> liste_ressources = new ArrayList<Ressources>();
+	private ArrayList<pieceConst> liste_pieces = new ArrayList<pieceConst>();
+	private int points ;
 	
 	public Joueur(int idJoueur, String nom, String mdp, boolean actif)
 	{
 		this.idJoueur = idJoueur ;
 		this.nom = nom ;
 		this.mdp = mdp ;
+		this.color = null ;
 		this.actif = actif ;
-		this.score = 0;
+		this.points = 0 ;
+		this.liste_ressources = (ArrayList<Ressources>) initialiser_ressources();
+		this.liste_pieces = (ArrayList<pieceConst>) initialiser_pieces();
 	}
 	
-	public Joueur(int idJoueur, String nom, boolean actif)
+	public ArrayList<pieceConst> initialiser_pieces()
 	{
-		this.idJoueur = idJoueur ;
-		this.nom = nom ;
-		this.actif = actif ;
-		this.score = 0;
+		ArrayList<pieceConst> liste = new ArrayList<pieceConst>();
+		liste.add(new pieceConst("Ville",4));
+		liste.add(new pieceConst("Colonie",3));
+		liste.add(new pieceConst("Route",13));
+		return liste ;
+	}
+	
+	public ArrayList<Ressources> initialiser_ressources()
+	{
+		 ArrayList<Ressources> liste = new ArrayList<Ressources>();
+		 liste.add(new Ressources("bois",0));
+		 liste.add(new Ressources("laine",0));
+		 liste.add(new Ressources("blé",0));
+		 liste.add(new Ressources("argile",0));
+		 liste.add(new Ressources("minerai",0));
+		 return liste ;
+	}
+
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 	public int getIdJoueur() {

@@ -5,9 +5,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -30,15 +36,29 @@ import java.awt.Graphics2D;
 public class Plateau extends JFrame {
 
 	private JPanel contentPane;
+	
+	private JPanel panel_des = new JPanel();
 
 	private JLabel label_fond = new JLabel("");
 	private JPanel panel_plateau ;
 
 	private ArrayList<JLabel> liste_cases_lbl = new ArrayList<JLabel>();
 	private ArrayList<JLabel> liste_pion_lbl = new ArrayList<JLabel>();
-	
+	private ArrayList<JLabel> liste_colonies = new ArrayList<JLabel>();
+	private ArrayList<JLabel> liste_routes = new ArrayList<JLabel>();
 	private Controller controleur ;
-	private boolean test_plat = true ;
+	
+	private boolean test_plat = false ;
+	
+	public ImageIcon dés[];
+	public Thread lancer;
+	
+	private int resultat_lancer = 0 ;
+	JButton btnTest ;
+	JButton button;
+
+	
+
 	/**
 	 * Launch the application.
 	 */
@@ -60,8 +80,10 @@ public class Plateau extends JFrame {
 		
 		/** si je suis en version test, j'initialise le plateau ici */
 		if(test_plat)
+		{
 			main.modele_plat = new M_plateau();
-
+			//main.p = new Partie() ;
+		}
 		/** DEFINITION PARAMETRES JFRAME **/
 		setTitle("Partie Catane");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -120,12 +142,23 @@ public class Plateau extends JFrame {
 		panel_action.setOpaque(false);
 		panel_action.setBounds(321, 967, 1569, 66);
 		contentPane.add(panel_action);
+		panel_action.setLayout(null);
+		
+		btnTest = new JButton("test");
+		btnTest.setBounds(12, 28, 97, 25);
+		btnTest.addActionListener(controleur);
+		panel_action.add(btnTest);
+		
+		button = new JButton("Lancer le d\u00E8s");
+		button.setBounds(121, 26, 141, 28);
+		button.addActionListener(controleur);
+		panel_action.add(button);
 		
 		JPanel panel_regles = new JPanel();
 		panel_regles.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.WHITE));
 		panel_regles.setBorder(new TitledBorder(null, "Action du joueur", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION,null, Color.red));
 		panel_regles.setOpaque(false);
-		panel_regles.setBounds(14, 984, 291, 51);
+		panel_regles.setBounds(14, 967, 291, 68);
 		contentPane.add(panel_regles);
 		panel_regles.setLayout(null);
 		/** FIN DEFINITION JPANEL **/
@@ -138,26 +171,88 @@ public class Plateau extends JFrame {
 		label_pseudo_joueur_principal.setBounds(12, 49, 271, 16);
 		panel_utilisateur_1.add(label_pseudo_joueur_principal);
 		
-		JLabel label_points_joueur_principal = new JLabel("Point(s) : ");
+		JLabel label_points_joueur_principal = new JLabel("Point(s) : " + main.joueur_actif.getPoints());
 		label_points_joueur_principal.setForeground(Color.white);
 		label_points_joueur_principal.setBounds(12, 78, 271, 16);
 		panel_utilisateur_1.add(label_points_joueur_principal);
 		
-		JLabel label_points_IA_1 = new JLabel("Point(s) :");
+		JLabel label_couleur_joueur_principal = new JLabel("Couleur : " + controleur.string_couleur(main.joueur_actif.getColor()));
+		label_couleur_joueur_principal.setForeground(Color.white);
+		label_couleur_joueur_principal.setBounds(12, 107, 271, 16);
+		panel_utilisateur_1.add(label_couleur_joueur_principal);
+		
+		JLabel label_points_IA_1 = new JLabel("Point(s) : " + main.p.getListe_IA().get(0).getPoints());
 		label_points_IA_1.setForeground(Color.white);
-		label_points_IA_1.setBounds(12, 38, 56, 16);
+		label_points_IA_1.setBounds(12, 64, 73, 16);
 		panel_IA1.add(label_points_IA_1);
 		
-		JLabel label_points_IA_2 = new JLabel("Point(s) : ");
-		label_points_IA_2.setBounds(12, 37, 73, 16);
+		JLabel label_nom_IA1 = new JLabel("Nom : " + main.p.getListe_IA().get(0).getNom());
+		label_nom_IA1.setForeground(Color.white);
+		label_nom_IA1.setBounds(12, 35, 271, 16);
+		panel_IA1.add(label_nom_IA1);
+		
+		JLabel label_couleur_IA1 = new JLabel("Couleur : " + controleur.string_couleur(main.p.getListe_IA().get(0).getColor()));
+		label_couleur_IA1.setForeground(Color.white);
+		label_couleur_IA1.setBounds(12, 93, 271, 16);
+		panel_IA1.add(label_couleur_IA1);
+		
+		JLabel label_points_IA_2 = new JLabel("Point(s) : " + main.p.getListe_IA().get(1).getPoints());
+		label_points_IA_2.setBounds(12, 64, 73, 16);
 		label_points_IA_2.setForeground(Color.white);
 		panel_IA2.add(label_points_IA_2);
 		
-		JLabel label_points_IA_3 = new JLabel("Point(s) : ");
-		label_points_IA_3.setBounds(12, 41, 73, 16);
+		JLabel label_nom_IA2 = new JLabel("Nom : " + main.p.getListe_IA().get(1).getNom());
+		label_nom_IA2.setForeground(Color.white);
+		label_nom_IA2.setBounds(12, 35, 271, 16);
+		panel_IA2.add(label_nom_IA2);
+		
+		JLabel label_couleur_IA2 = new JLabel("Couleur : " + controleur.string_couleur(main.p.getListe_IA().get(1).getColor()));
+		label_couleur_IA2.setForeground(Color.white);
+		label_couleur_IA2.setBounds(12, 93, 271, 16);
+		panel_IA2.add(label_couleur_IA2);
+		
+		JLabel label_points_IA_3 = new JLabel("Point(s) : " + main.p.getListe_IA().get(2).getPoints());
+		label_points_IA_3.setBounds(12, 64, 73, 16);
 		label_points_IA_3.setForeground(Color.white);
 		panel_IA3.add(label_points_IA_3);
+		
+		JLabel label_nom_IA3 = new JLabel("Nom : " + main.p.getListe_IA().get(2).getNom());
+		label_nom_IA3.setForeground(Color.white);
+		label_nom_IA3.setBounds(12, 35, 271, 16);
+		panel_IA3.add(label_nom_IA3);
+		
+		JLabel label_couleur_IA3 = new JLabel("Couleur : " +controleur.string_couleur(main.p.getListe_IA().get(2).getColor()));
+		label_couleur_IA3.setForeground(Color.white);
+		label_couleur_IA3.setBounds(12, 93, 271, 16);
+		panel_IA3.add(label_couleur_IA3);
 		/** FIN DEFINITION JLABELS **/
+		
+		int[] test = main.p.initialiser_position_colonies(Color.ORANGE);
+		controleur.placer_colonies(Color.ORANGE,test[0],test[1]);
+		controleur.placer_colonies(Color.ORANGE,test[2],test[3]);
+		test = main.p.initialiser_position_colonies(Color.RED);
+		controleur.placer_colonies(Color.RED,test[0],test[1]);
+		controleur.placer_colonies(Color.RED,test[2],test[3]);
+		test = main.p.initialiser_position_colonies(Color.BLUE);
+		controleur.placer_colonies(Color.BLUE,test[0],test[1]);
+		controleur.placer_colonies(Color.BLUE,test[2],test[3]);
+		test = main.p.initialiser_position_colonies(Color.WHITE);
+		controleur.placer_colonies(Color.WHITE,test[0],test[1]);
+		controleur.placer_colonies(Color.WHITE,test[2],test[3]);
+		
+		//
+		test = main.p.initialiser_position_routes(Color.ORANGE);
+		controleur.placer_route(Color.ORANGE,test[0],test[1],-45);
+		controleur.placer_route(Color.ORANGE,test[2],test[3],45);
+		test = main.p.initialiser_position_routes(Color.RED);
+		controleur.placer_route(Color.RED,test[0],test[1],45);
+		controleur.placer_route(Color.RED,test[2],test[3],-45);
+		test = main.p.initialiser_position_routes(Color.BLUE);
+		controleur.placer_route(Color.BLUE,test[0],test[1],-45);
+		controleur.placer_route(Color.BLUE,test[2],test[3],45);
+		test = main.p.initialiser_position_routes(Color.WHITE);
+		controleur.placer_route(Color.WHITE,test[0],test[1],180);
+		controleur.placer_route(Color.WHITE,test[2],test[3],-45);
 		
 		/***** PLACEMENT DES PIONS SUR LE PLATEAU ******/
 		liste_pion_lbl.addAll(placer_pions(330,210,3,0));
@@ -170,19 +265,19 @@ public class Plateau extends JFrame {
 		/***** PLACEMENT DES CASES SUR LE PLATEAU ******/
 		liste_cases_lbl.addAll(placer_cases(263,166,3,0));
 		liste_cases_lbl.addAll(placer_cases(196,417,4,1));
-		liste_cases_lbl.addAll(placer_cases(131,670,5,2));
+		liste_cases_lbl.addAll(placer_cases(130,670,5,2));
 		liste_cases_lbl.addAll(placer_cases(196,923,4,3));
 		liste_cases_lbl.addAll(placer_cases(263,1174,3,4));
 		/***** FIN DU PLACEMENT DES CASES SUR LE PLATEAU ******/
 		
 		/** DECLARATION DES BOUTONS **/
 		JButton bouton_regles = new JButton("R\u00E8gles");
-		bouton_regles.setBounds(12, 10, 120, 30);
+		bouton_regles.setBounds(12, 25, 120, 30);
 		bouton_regles.setBackground(Color.WHITE);
 		panel_regles.add(bouton_regles);
 		
 		JButton bouton_quitter = new JButton("Quitter la partie");
-		bouton_quitter.setBounds(144, 10, 139, 30);
+		bouton_quitter.setBounds(140, 25, 139, 30);
 		bouton_quitter.setBackground(Color.WHITE);
 		panel_regles.add(bouton_quitter);
 		/** FIN DECLARATION DES BOUTONS **/
@@ -215,10 +310,30 @@ public class Plateau extends JFrame {
 		panel_plateau.setLayout(null);
 		label_fond.addMouseListener(controleur);
 		panel_plateau.add(label_fond);
+		paint(panel_plateau.getGraphics());
+
+		
+		
 		
 		/** FIN DECLARATION DES IMAGES DE FOND **/
 	}
 	
+	public Controller getControleur() {
+		return controleur;
+	}
+
+	public void setControleur(Controller controleur) {
+		this.controleur = controleur;
+	}
+
+	public JButton getBtnTest() {
+		return btnTest;
+	}
+
+	public void setBtnTest(JButton btnTest) {
+		this.btnTest = btnTest;
+	}
+
 	/** DECLARATION GETTERS ET SETTERS **/
 	public JPanel getContentPane() 
 	{
@@ -238,8 +353,43 @@ public class Plateau extends JFrame {
 	{
 		return label_fond;
 	}
+	
+	public JButton getButton() {
+		return button;
+	}
+
+	public void setButton(JButton button) {
+		this.button = button;
+	}
+	
+	public ArrayList<JLabel> getListe_colonies() {
+		return liste_colonies;
+	}
+
+	public void setListe_colonies(ArrayList<JLabel> liste_colonies) {
+		this.liste_colonies = liste_colonies;
+	}
+
 	/** FIN DECLARATION GETTERS ET SETTERS **/
 
+	
+	public ArrayList<JLabel> getListe_routes() {
+		return liste_routes;
+	}
+
+	public void setListe_routes(ArrayList<JLabel> liste_routes) {
+		this.liste_routes = liste_routes;
+	}
+
+	/** function test */
+	/*public void placer_points(int x,int y, int nb_points)
+	{
+		for(int i=0,j=x;i<nb_points;i++,j+=133)
+		{
+			 Graphics2D g = (Graphics2D) getGraphics();
+			 g.drawOval(j,y, 5, 5);  
+		}
+	}*/
 	/**
 	 * @param x -> coordonnées X 
 	 * @param y -> Coordonnées Y
@@ -247,6 +397,7 @@ public class Plateau extends JFrame {
 	 * @param ligne -> position dans la tableau du modèle de la ligne qu'on est entrain de placer
 	 * @return -> une liste de JLabel 
 	 */
+	
 	public ArrayList<JLabel> placer_pions(int x, int y, int nb_cases, int ligne)
 	{
 		ArrayList<JLabel> liste_jlab = new ArrayList<JLabel>();
@@ -321,5 +472,73 @@ public class Plateau extends JFrame {
 			liste_jlab.add(test);
 		}
 		return liste_jlab ;
+	}
+	
+	public void lancer_des() throws InterruptedException
+	{
+		panel_des.setOpaque(false);
+		panel_des.setBounds(1035, 13, 424, 342);
+		panel_plateau.add(panel_des);
+		
+		JLabel faceD1 = new JLabel();
+		JLabel faceD2 = new JLabel();
+		panel_des.add(faceD1);
+		panel_des.add(faceD2);
+		
+		dés = new ImageIcon[6];
+		dés[0] = new ImageIcon(".//Img//des//d1.JPG");
+		dés[1] = new ImageIcon(".//Img//des//d2.JPG");
+		dés[2] = new ImageIcon(".//Img//des//d3.JPG");
+		dés[3] = new ImageIcon(".//Img//des//d4.JPG");
+		dés[4] = new ImageIcon(".//Img//des//d5.JPG");
+		dés[5] = new ImageIcon(".//Img//des//d6.JPG");
+
+			
+	        lancer = new Thread() {
+				int f1=0;
+				int f2=0;
+				//int s=0;
+				int i=0;
+				
+	            public void run() {
+	            	while(i < 20){
+	            		faceD1.removeAll();
+	            		faceD2.removeAll();
+	            	//	message_des.setText("");
+					int d1 = (int) (Math.random() * 5 );
+					int d2 = (int) (Math.random() * 5 );
+					faceD1.setIcon(dés[d1]);
+					faceD2.setIcon(dés[d2]); 
+					f1 = d1+1;
+					f2 = d2+1;
+						try {
+							Thread.sleep(100);								
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+					i++;	
+	            	}
+	            	panel_des.remove(faceD1);
+					panel_des.remove(faceD2);
+					//panel_plateau.remove(panel_des);
+					resultat_lancer = f1+f2;
+					System.out.println(resultat_lancer);
+					main.modele_plat.resultat_des(resultat_lancer);
+	            }    
+	          };
+	          
+		lancer.start();
+		
+		
+	}
+
+	public int getResultat_lancer() {
+		return resultat_lancer;
+	}
+
+	public void setResultat_lancer(int resultat_lancer) {
+		this.resultat_lancer = resultat_lancer;
 	}
 }

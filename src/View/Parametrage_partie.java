@@ -121,11 +121,11 @@ public class Parametrage_partie extends JFrame /*implements ItemListener,ActionL
 		combo_couleur.setFont(new Font("Sitka Subheading", Font.PLAIN, 15));
 		combo_couleur.addItem("Orange");
 		combo_couleur.addItem("Rouge");
-		combo_couleur.addItem("Vert");
+		//combo_couleur.addItem("Vert");
 		combo_couleur.addItem("Bleu");
-		combo_couleur.addItem("Jaune");
+		//combo_couleur.addItem("Jaune");
 		combo_couleur.addItem("Blanc");
-		combo_couleur.addItem("Noir");
+		//combo_couleur.addItem("Noir");
 		combo_couleur.addItemListener(controleur);
 		contentPane.add(combo_couleur);
 		
