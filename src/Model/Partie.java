@@ -3,23 +3,24 @@ package Model;
 import com.modeliosoft.modelio.javadesigner.annotations.objid;
 
 @objid ("dbb65517-e717-4f97-a9aa-5f6b73991f10")
-public class Partie {
-    @objid ("256e170e-800d-462e-aef0-4b1aa4e3bbba")
+public class Partie extends Thread{
+    
+	@objid ("256e170e-800d-462e-aef0-4b1aa4e3bbba")
     public Integer nbCartes;
-
     @objid ("e67a72c1-5a43-4484-b0a7-5301aa7760bc")
     public Integer nbCases;
-
     @objid ("5642bfe6-1f87-4f9f-b878-4dc4df67bc19")
     public Integer nbJoueur;
-
     @objid ("f6580126-2d9d-4a55-b147-ae84a56a1b7e")
-    public int tour;
-    
     public Integer niveau_IA ;
+    public boolean win = false;
+
 
     @objid ("62dc3ee3-628f-4d9e-8021-74c64e79ea09")
     public void initPartie() {
+    	// charger la création du plateau du point de vu des données
+    	// instancier les éléments de jeu (cartes, jetons , ...)
+    	// création des joueurs
     }
 
     @objid ("404ad5cc-66fb-4346-b0d9-b42a3b82f1b3")
@@ -55,6 +56,21 @@ public class Partie {
 
     @objid ("0341db70-3352-43ce-a92a-a01bdb67f33e")
     public void nextTour() {
+    }
+    
+
+    
+    public void run(){
+    	initPartie(); // on initialise les élément de base du jeu
+    	
+    	//création des joueurs
+    	
+    	
+    	
+    	while(win == false){
+    		
+    	}
+    	
     }
 
 }
