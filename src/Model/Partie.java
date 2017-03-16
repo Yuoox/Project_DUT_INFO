@@ -18,18 +18,11 @@ public class Partie extends Thread{
     @objid ("5642bfe6-1f87-4f9f-b878-4dc4df67bc19")
     public Integer nbJoueur;
     @objid ("f6580126-2d9d-4a55-b147-ae84a56a1b7e")
-<<<<<<< HEAD
+
     public Integer niveau_IA ;
     public boolean win = false;
-
-=======
     public int tour;
-    
-       
-    public Integer niveau_IA ;
-    
     private Joueur joueur_principal ;
-    
     private ArrayList<IA> liste_IA = new ArrayList<IA>();
     
     public ArrayList<Color> liste_couleur = new ArrayList<Color>() {{
@@ -38,7 +31,7 @@ public class Partie extends Thread{
     	add(Color.BLUE);
     	add(Color.WHITE);	
     }};
->>>>>>> a0443ff8ea20f57abe0013f35200155c3761ba8f
+
 
     @objid ("62dc3ee3-628f-4d9e-8021-74c64e79ea09")
     public void initPartie() {
@@ -91,9 +84,7 @@ public class Partie extends Thread{
     @objid ("0341db70-3352-43ce-a92a-a01bdb67f33e")
     public void nextTour() {
     }
-    
-<<<<<<< HEAD
-
+   
     
     public void run(){
     	initPartie(); // on initialise les élément de base du jeu
@@ -105,8 +96,8 @@ public class Partie extends Thread{
     	while(win == false){
     		
     	}
-    	
-=======
+    }  	
+
     
     public int[] initialiser_position_colonies(Color c)
     {
@@ -140,7 +131,6 @@ public class Partie extends Thread{
     	
     	return tab ;
     	
->>>>>>> a0443ff8ea20f57abe0013f35200155c3761ba8f
     }
 
 }
