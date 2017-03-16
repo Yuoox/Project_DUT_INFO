@@ -19,6 +19,7 @@ public class main {
     {
     	m = new main();
     }
+    
 	public static void main(String[] args)
 	{
 		liste_joueurs = Joueur.lire();

@@ -530,8 +530,7 @@ public class Plateau extends JFrame {
 	          };
 	          
 		lancer.start();
-		
-		
+			
 	}
 
 	public int getResultat_lancer() {

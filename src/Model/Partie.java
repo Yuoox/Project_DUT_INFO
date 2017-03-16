@@ -1,6 +1,7 @@
 package Model;
 
 import java.awt.Color;
+import java.awt.event.ActionListener;
 import java.lang.invoke.SwitchPoint;
 import java.util.ArrayList;
 
@@ -21,10 +22,17 @@ public class Partie extends Thread{
     @objid ("f6580126-2d9d-4a55-b147-ae84a56a1b7e")
 
     public Integer niveau_IA ;
+    //vérifier si la partie est gagné
     public boolean win = false;
+    //pour gérer le cycle de tour pour un tour de chaque joueur
     public Integer cycle;
     public Integer tour;
+    
     public String winner = "";
+    //Stocker L'ia ou je joueur actif
+    private Joueur actif_J ;
+    private IA actif_IA ;
+    //stocker les joueurs et IA
     private Joueur joueur_principal ;
     private ArrayList<IA> liste_IA = new ArrayList<IA>();
     
@@ -136,7 +144,7 @@ public class Partie extends Thread{
     }
 
     
-    public void play() throws InterruptedException{
+    public void run(){
     	// on initialise les élément de base du jeu
     	
     	// je charger les éléments du plateau pour les stocker
@@ -156,74 +164,62 @@ public class Partie extends Thread{
     	//tant que personne n'a gagner on continue
     	while(win == false){
     		
-        	// dans le cas ou l'on prend avec les IA
-        	/*
-        	for (IA l : getListe_IA()){
-        		
-        	}
-        	 */
+    		if (cycle == 5){cycle = 1;};
     		
     		switch (cycle){
-    		  case 1:
-    			  	tour++;
-    			  	System.out.println("Tour n°"+tour);
-    			  	j1.setActif(true);
-    	    		j1.jouer();
-    	    		j2.jouer();
-    	    		j2.jouer();
-    	    		j2.jouer();
-    	    		cycle++;
-    	    		Thread.sleep(1000);
-    	    		if(j1.getPoints() >= 10){win = true; winner = j1.getNom();}
+    		// le joueur 1
+    		  case 1:		
+        		tour++;
+    		  	System.out.println("Tour n°"+tour);
+    		  	j1.setActif(true);
+    		  	j1.jouer();
+        		cycle++;
+        		if(j1.getPoints() >= 10){win = true; winner = j1.getNom();}
     		    break;
+ 		    
+    		    //le joueur2
     		  case 2:
-	  			  	tour++;
-	  			  	System.out.println("Tour n°"+tour);
-    			  	j2.setActif(true);
-    	    		j1.jouer();
-    	    		j2.jouer();
-    	    		j2.jouer();
-    	    		j2.jouer();
-    	    		cycle++;
-    	    		Thread.sleep(1000);
-    	    		if(j2.getPoints() >= 10){win = true; winner = j2.getNom();}
+        		tour++;
+    		  	System.out.println("Tour n°"+tour);
+    		  	j2.setActif(true);
+    		  	j2.jouer();
+        		cycle++;
+        		if(j2.getPoints() >= 10){win = true; winner = j2.getNom();}
     		    break;
+    		    
+    		 // le joueur 3
     		  case 3:
-	  			  	tour++;
-	  			  	System.out.println("Tour n°"+tour);
-    			  	j3.setActif(true);
-	  	    		j1.jouer();
-	  	    		j2.jouer();
-	  	    		j3.jouer();
-	  	    		j4.jouer();
-	  	    		cycle++;
-	  	    		Thread.sleep(1000);
-    	    		if(j3.getPoints() >= 10){win = true; winner = j3.getNom();}
+          		tour++;
+      		  	System.out.println("Tour n°"+tour);
+      		  	j3.setActif(true);
+      		  	j3.jouer();
+          		cycle++;
+          		if(j3.getPoints() >= 10){win = true; winner = j3.getNom();}
     		    break;
+    		    
+    		 // le joueur 4
     		  case 4:
-	  			  	tour++;
-	  			  	System.out.println("Tour n°"+tour);
-    			  	j4.setActif(true);
-	  	    		j1.jouer();
-	  	    		j2.jouer();
-	  	    		j3.jouer();
-	  	    		j4.jouer();
-	  	    		cycle = 1;
-	  	    		Thread.sleep(1000);
-    	    		if(j4.getPoints() >= 10){win = true; winner = j4.getNom();}
+          		tour++;
+      		  	System.out.println("Tour n°"+tour);
+      		  	j4.setActif(true);
+      		  	j4.jouer();
+          		cycle++;
+          		if(j4.getPoints() >= 10){win = true; winner = j4.getNom();}
       		    break;
     		  default:
-    		}	
+    		}
+
+ 		
     	}
     	
-    	System.out.println("Le Joueur"+winner+" à gagner !");
+    	System.out.println("Le Joueur : "+winner+" à gagner !");
     	
     }
     
 	 public static void main(String[] args) throws InterruptedException
 	 {
 		 Partie p = new Partie(4);
-		 p.play();
+		 p.start();
 		 
 		 
 	 }

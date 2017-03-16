@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 import View.MenuPrincipal;
 import View.main;
@@ -19,6 +20,7 @@ public class Joueur implements Serializable {
 	private String mdp ;
 	private Color color ;
 	private boolean actif ;
+	private boolean next ; // nous sert pour dire qu'un tour est fini
 	private ArrayList<Ressources> liste_ressources = new ArrayList<Ressources>();
 	private ArrayList<pieceConst> liste_pieces = new ArrayList<pieceConst>();
 	private int points ;
@@ -114,6 +116,37 @@ public class Joueur implements Serializable {
 	public void setActif(boolean actif) {
 		this.actif = actif;
 	}
+	
+	
+	public boolean isNext() {
+		return next;
+	}
+
+
+	public void setNext(boolean next) {
+		this.next = next;
+	}
+
+
+	public ArrayList<Ressources> getListe_ressources() {
+		return liste_ressources;
+	}
+
+
+	public void setListe_ressources(ArrayList<Ressources> liste_ressources) {
+		this.liste_ressources = liste_ressources;
+	}
+
+
+	public ArrayList<pieceConst> getListe_pieces() {
+		return liste_pieces;
+	}
+
+
+	public void setListe_pieces(ArrayList<pieceConst> liste_pieces) {
+		this.liste_pieces = liste_pieces;
+	}
+
 
 	public static int ajouter_joueur(String pseudo, String mdp)
 	{
@@ -230,15 +263,22 @@ public class Joueur implements Serializable {
 	}
 	
 	public void jouer(){	
-		if (this.actif == true){
-			int nb = (int) (Math.random() *  3);
+
+		
+			Random rand = new Random();
+			int nb = rand.nextInt(3 - 1 + 1) + 1;
+			System.out.println("j'ai obtenu "+nb+" point");
 			this.setPoints(nb);
-			System.out.println("je suis : "+this.getNom()+" mon id est : "+this.getIdJoueur()+" mon score : "+this.getPoints());
+			System.out.println(this.getNom()+" : mon score : "+this.getPoints()+"\n");
 			this.setActif(false);
-		}
-		else{
-			// gestion du commerce avec le joueur actif
-		}
+			
+			// lancer les dés
+			// jouer cartes
+			// construire / placer
+			// commerce interieur
+			// commerce maritime
+		
+
 	}
 	
 	 
