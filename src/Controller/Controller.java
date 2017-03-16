@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -11,13 +12,19 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import Model.IA;
 import Model.Joueur;
+import Model.M_plateau;
 import Model.Partie;
 import View.Accueil;
 import View.Informations;
@@ -160,7 +167,7 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 		{
 			int niv_IA = IA+1 ;
 			int nb_j = nb_joueurs+3;
-			Partie p = new Partie(nb_j,niv_IA);
+			Partie p = new Partie(nb_j,niv_IA,main.joueur_actif);
 			main.p = p ;
 			return true ;
 		}
@@ -245,9 +252,49 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 				int nb_joueurs = this.vue_parametrage.getCombo_joueurs().getSelectedIndex();
 				if(creer_partie(niv_IA,nb_joueurs))
 				{
+					Color c = null ; 
+					System.out.println("index : " + this.vue_parametrage.getCombo_couleur().getSelectedIndex());
+					switch(this.vue_parametrage.getCombo_couleur().getSelectedIndex())
+					{
+						case 0 : c = Color.ORANGE ; break; 
+						case 1 : c = Color.RED ; break; 
+						case 2 : c = Color.BLUE ; break; 
+						case 3 : c = Color.WHITE ; break; 
+					}
+					main.joueur_actif.setColor(c);
+					main.p.liste_couleur.remove(c);
+					main.p.setListe_IA(IA.creer_IA()) ;
+					main.modele_plat = new M_plateau();
 					this.vue_parametrage.setVisible(false);
 					Plateau.main(null);
+
 				}
+			}
+		}
+		if(this.vue_plateau!=null)
+		{
+			if(e.getSource().equals(this.vue_plateau.getBtnTest()))
+			{	this.placer_points(332,128,3);
+				this.placer_points(265,169,4);
+				this.placer_points(265,253,4);
+				this.placer_points(198,294,5);
+				this.placer_points(198,378,5);
+				this.placer_points(131,420,6);
+				this.placer_points(131,506,6);
+				this.placer_points(198,546,5);
+				this.placer_points(198,633,5);
+				this.placer_points(265,673,4);
+				this.placer_points(265,758,4);
+				this.placer_points(331,798,3);
+			}
+			if(e.getSource().equals(this.vue_plateau.getButton()))
+			{	
+		    	  try {
+					this.vue_plateau.lancer_des();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}	
 			}
 		}
 	}
@@ -261,13 +308,13 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 			{
 				switch(this.vue_parametrage.getCombo_couleur().getSelectedIndex())
 				{
-				case 0 : this.vue_parametrage.mise_a_jour_textpane(Color.ORANGE);break ;
-				case 1 : this.vue_parametrage.mise_a_jour_textpane(Color.RED);break ;
-				case 2 : this.vue_parametrage.mise_a_jour_textpane(Color.GREEN);break ;
-				case 3 : this.vue_parametrage.mise_a_jour_textpane(Color.BLUE);break ;
-				case 4 : this.vue_parametrage.mise_a_jour_textpane(Color.YELLOW);break ;
-				case 5 : this.vue_parametrage.mise_a_jour_textpane(Color.WHITE);break ;
-				case 6 : this.vue_parametrage.mise_a_jour_textpane(Color.BLACK);break ;
+					case 0 : this.vue_parametrage.mise_a_jour_textpane(Color.ORANGE);break ;
+					case 1 : this.vue_parametrage.mise_a_jour_textpane(Color.RED);break ;
+					//case 2 : this.vue_parametrage.mise_a_jour_textpane(Color.GREEN);break ;
+					case 2 : this.vue_parametrage.mise_a_jour_textpane(Color.BLUE);break ;
+					//case 4 : this.vue_parametrage.mise_a_jour_textpane(Color.YELLOW);break ;
+					case 3 : this.vue_parametrage.mise_a_jour_textpane(Color.WHITE);break ;
+					//case 6 : this.vue_parametrage.mise_a_jour_textpane(Color.BLACK);break ;
 				}
 			}
 		}
@@ -597,6 +644,78 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 			}
 		}
 
+	}
+	
+	public void placer_points(int x,int y, int nb_points)
+	{
+		int tab[] = new int[10];
+		for(int i=0,j=x;i<nb_points;i++,j+=133)
+		{
+			 Graphics2D g = (Graphics2D) this.vue_plateau.getLabel_fond().getGraphics();
+			 g.drawOval(j,y, 15, 15);  
+			 tab[i] = j ;
+		}
+		for(int i=0;i<tab.length;i++)
+		{
+			System.out.print(tab[i]+",");
+		}
+		System.out.println("");
+	}
+	
+	public static String string_couleur(Color c)
+	{
+		if(c.equals(Color.ORANGE))
+			return "Orange" ;
+		if(c.equals(Color.RED))
+			return "Rouge" ;
+		if(c.equals(Color.BLUE))
+			return "Bleu" ;
+		if(c.equals(Color.WHITE))
+			return "Blanc" ;
+		return null;
+	}
+	
+	public void placer_colonies(Color c,int x, int y)
+	{
+		ImageIcon im ;
+		String couleur = string_couleur(c);
+		im = new ImageIcon(".\\Img\\Colonies\\" + couleur + ".png");
+		im = new ImageIcon(im.getImage().getScaledInstance(50, 50,Image.SCALE_DEFAULT));
+
+		JLabel colonies = new JLabel(im);
+		colonies.setHorizontalAlignment(SwingConstants.TRAILING);
+		colonies.setBounds(x, y, 50, 50);
+		colonies.setLayout(null);
+		JPanel plateau = this.vue_plateau.getPanel_plateau();
+		colonies.setOpaque(false);
+		plateau.add(colonies);
+		this.vue_plateau.setPanel_plateau(plateau);
+		ArrayList<JLabel> liste_lab = this.vue_plateau.getListe_colonies();
+		liste_lab.add(colonies);
+		this.vue_plateau.setListe_colonies(liste_lab);
+	}
+	
+	public void placer_route(Color c, int x, int y,int rot)
+	{
+		ImageIcon im ;
+		String couleur = string_couleur(c);
+		im = new ImageIcon(".\\Img\\Route\\" + couleur + "_" + rot +".png");
+		System.out.println(".\\Img\\Route\\" + couleur + "_" + rot +".png");
+		im = new ImageIcon(im.getImage().getScaledInstance(85, 80,Image.SCALE_DEFAULT));
+	
+		JLabel route = new JLabel(im);
+		route.setHorizontalAlignment(SwingConstants.TRAILING);
+		route.setBounds(x, y, 85, 80);
+		route.setLayout(null);
+		route.setOpaque(false);
+		JPanel plateau = this.vue_plateau.getPanel_plateau();
+		plateau.add(route);
+		this.vue_plateau.setPanel_plateau(plateau);
+		ArrayList<JLabel> liste_lab = this.vue_plateau.getListe_routes();
+		liste_lab.add(route);
+		this.vue_plateau.setListe_routes(liste_lab);
+		System.out.println("cc");
+		
 	}
 
 }
