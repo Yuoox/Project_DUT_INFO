@@ -25,6 +25,7 @@ public class Partie extends Thread{
     private Joueur joueur_principal ;
     private ArrayList<IA> liste_IA = new ArrayList<IA>();
     
+    
     public ArrayList<Color> liste_couleur = new ArrayList<Color>() {{
     	add(Color.ORANGE);
     	add(Color.RED);
@@ -34,11 +35,7 @@ public class Partie extends Thread{
 
 
     @objid ("62dc3ee3-628f-4d9e-8021-74c64e79ea09")
-    public void initPartie() {
-    	// charger la création du plateau du point de vu des données
-    	// instancier les éléments de jeu (cartes, jetons , ...)
-    	// création des joueurs
-    }
+    public void initPartie() {}
 
     @objid ("404ad5cc-66fb-4346-b0d9-b42a3b82f1b3")
     public Partie(Integer nbJoueurs, Integer niv_IA, Joueur j_principal) {
@@ -48,7 +45,21 @@ public class Partie extends Thread{
         this.joueur_principal = j_principal ;
         this.liste_IA = null ;
     }
+    
+    public Partie(Integer nbJoueurs){
+    	//constructeur de test
+    	this.joueur_principal = new Joueur(1, "joueur 1", false);
+    	
+    	for ( int i = 0 ; i < nbJoueurs-1 ; i++){
+        	IA l = new IA(i+1, "IA "+i+1, false);
+        	addListe_IA(l);
+    	}
+    }
 
+	public void addListe_IA(IA l) {
+		this.liste_IA.add(l);
+	}
+    
     public ArrayList<IA> getListe_IA() {
 		return liste_IA;
 	}
@@ -76,30 +87,18 @@ public class Partie extends Thread{
     public void setNbCases(Integer nbCases) {
         this.nbCases = nbCases;
     }
+ 
+    public Joueur getJoueur_principal() {
+		return joueur_principal;
+	}
 
-    @objid ("0f9c6784-707c-4e5f-bbfa-8535a6d697fe")
-    public void choixNbJoueur() {
-    }
-
-    @objid ("0341db70-3352-43ce-a92a-a01bdb67f33e")
-    public void nextTour() {
-    }
-   
-    
-    public void run(){
-    	initPartie(); // on initialise les élément de base du jeu
-    	
-    	//création des joueurs
-    	
-    	
-    	
-    	while(win == false){
-    		
-    	}
-    }  	
-
-    
-    public int[] initialiser_position_colonies(Color c)
+	public void setJoueur_principal(Joueur joueur_principal) {
+		this.joueur_principal = joueur_principal;
+	}
+	
+    //------------------------------------
+	
+	public int[] initialiser_position_colonies(Color c)
     {
     	String couleur = Controller.string_couleur(c);
     	//int value = -1 ;
@@ -133,4 +132,32 @@ public class Partie extends Thread{
     	
     }
 
+    
+    public void run(){
+    	// on initialise les élément de base du jeu
+    	
+    	// je charger les éléments du plateau pour les stocker
+    	M_plateau stmodele_plat = main.modele_plat;
+    	
+    	//on manipulera cette variable par la suite
+    	//on lancer les threads des joueurs
+    	joueur_principal.getJouer().start();
+    	
+    	for (IA l : getListe_IA()){
+    		l.getJouer().start();
+    	}
+
+    	//tant que personne n'a gagner on continue
+    	while(win == false){
+    		
+    	}
+    }
+    
+	 public static void main(String[] args)
+	 {
+		 Partie p = new Partie(4);
+		 p.start();
+	 }
+    
+    
 }

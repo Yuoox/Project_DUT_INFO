@@ -19,6 +19,7 @@ public class Joueur implements Serializable{
 	private String mdp ;
 	private Color color ;
 	private boolean actif ;
+	private Thread jouer;
 	private ArrayList<Ressources> liste_ressources = new ArrayList<Ressources>();
 	private ArrayList<pieceConst> liste_pieces = new ArrayList<pieceConst>();
 	private int points ;
@@ -33,6 +34,28 @@ public class Joueur implements Serializable{
 		this.points = 0 ;
 		this.liste_ressources = (ArrayList<Ressources>) initialiser_ressources();
 		this.liste_pieces = (ArrayList<pieceConst>) initialiser_pieces();
+		this.jouer = new Thread(){
+			public void run(){
+				//le code du joueur
+			}
+		}; 
+	}
+	
+	public Joueur(int idJoueur, String nom, boolean actif)
+	{
+		this.idJoueur = idJoueur ;
+		this.nom = nom ;
+		this.color = null ;
+		this.actif = actif ;
+		this.points = 0 ;
+		this.liste_ressources = (ArrayList<Ressources>) initialiser_ressources();
+		this.liste_pieces = (ArrayList<pieceConst>) initialiser_pieces();
+		this.jouer = new Thread(){
+			public void run(){
+				//le code du joueur
+				System.out.println("je suis un joueur");
+			}
+		};
 	}
 	
 	public ArrayList<pieceConst> initialiser_pieces()
@@ -103,6 +126,14 @@ public class Joueur implements Serializable{
 		this.actif = actif;
 	}
 	
+	public Thread getJouer() {
+		return jouer;
+	}
+
+	public void setJouer(Thread jouer) {
+		this.jouer = jouer;
+	}
+
 	public static int ajouter_joueur(String pseudo, String mdp)
 	{
 		if(pseudo.equals("") && mdp.equals(""))
