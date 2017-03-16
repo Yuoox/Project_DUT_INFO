@@ -12,14 +12,13 @@ import java.util.ArrayList;
 import View.MenuPrincipal;
 import View.main;
 
-public class Joueur implements Serializable{
+public class Joueur implements Serializable {
 
 	private int idJoueur ;
 	private String nom ;
 	private String mdp ;
 	private Color color ;
 	private boolean actif ;
-	private Thread jouer;
 	private ArrayList<Ressources> liste_ressources = new ArrayList<Ressources>();
 	private ArrayList<pieceConst> liste_pieces = new ArrayList<pieceConst>();
 	private int points ;
@@ -34,12 +33,8 @@ public class Joueur implements Serializable{
 		this.points = 0 ;
 		this.liste_ressources = (ArrayList<Ressources>) initialiser_ressources();
 		this.liste_pieces = (ArrayList<pieceConst>) initialiser_pieces();
-		this.jouer = new Thread(){
-			public void run(){
-				//le code du joueur
-			}
-		}; 
 	}
+	
 	
 	public Joueur(int idJoueur, String nom, boolean actif)
 	{
@@ -49,13 +44,7 @@ public class Joueur implements Serializable{
 		this.actif = actif ;
 		this.points = 0 ;
 		this.liste_ressources = (ArrayList<Ressources>) initialiser_ressources();
-		this.liste_pieces = (ArrayList<pieceConst>) initialiser_pieces();
-		this.jouer = new Thread(){
-			public void run(){
-				//le code du joueur
-				System.out.println("je suis un joueur");
-			}
-		};
+		this.liste_pieces = (ArrayList<pieceConst>) initialiser_pieces(); 
 	}
 	
 	public ArrayList<pieceConst> initialiser_pieces()
@@ -83,7 +72,7 @@ public class Joueur implements Serializable{
 	}
 
 	public void setPoints(int points) {
-		this.points = points;
+		this.points += points;
 	}
 
 	public Color getColor() {
@@ -124,14 +113,6 @@ public class Joueur implements Serializable{
 
 	public void setActif(boolean actif) {
 		this.actif = actif;
-	}
-	
-	public Thread getJouer() {
-		return jouer;
-	}
-
-	public void setJouer(Thread jouer) {
-		this.jouer = jouer;
 	}
 
 	public static int ajouter_joueur(String pseudo, String mdp)
@@ -247,6 +228,19 @@ public class Joueur implements Serializable{
 					}
 		}
 	}
+	
+	public void jouer(){	
+		if (this.actif == true){
+			int nb = (int) (Math.random() *  3);
+			this.setPoints(nb);
+			System.out.println("je suis : "+this.getNom()+" mon id est : "+this.getIdJoueur()+" mon score : "+this.getPoints());
+			this.setActif(false);
+		}
+		else{
+			// gestion du commerce avec le joueur actif
+		}
+	}
+	
 	 
 	 public static void main(String[] args)
 	 {

@@ -1,6 +1,7 @@
 package Model;
 
 import java.awt.Color;
+import java.lang.invoke.SwitchPoint;
 import java.util.ArrayList;
 
 import com.modeliosoft.modelio.javadesigner.annotations.objid;
@@ -21,7 +22,9 @@ public class Partie extends Thread{
 
     public Integer niveau_IA ;
     public boolean win = false;
-    public int tour;
+    public Integer cycle;
+    public Integer tour;
+    public String winner = "";
     private Joueur joueur_principal ;
     private ArrayList<IA> liste_IA = new ArrayList<IA>();
     
@@ -133,7 +136,7 @@ public class Partie extends Thread{
     }
 
     
-    public void run(){
+    public void play() throws InterruptedException{
     	// on initialise les élément de base du jeu
     	
     	// je charger les éléments du plateau pour les stocker
@@ -141,22 +144,88 @@ public class Partie extends Thread{
     	
     	//on manipulera cette variable par la suite
     	//on lancer les threads des joueurs
-    	joueur_principal.getJouer().start();
+    	Joueur j1 = new Joueur(1, "joueur 1", false);
+    	Joueur j2 = new Joueur(2, "joueur 2", false);
+    	Joueur j3 = new Joueur(3, "joueur 3", false);
+    	Joueur j4 = new Joueur(4, "joueur 4", false);
     	
-    	for (IA l : getListe_IA()){
-    		l.getJouer().start();
-    	}
+    	
+		tour = 0;
+		cycle = 1;
 
     	//tant que personne n'a gagner on continue
     	while(win == false){
     		
+        	// dans le cas ou l'on prend avec les IA
+        	/*
+        	for (IA l : getListe_IA()){
+        		
+        	}
+        	 */
+    		
+    		switch (cycle){
+    		  case 1:
+    			  	tour++;
+    			  	System.out.println("Tour n°"+tour);
+    			  	j1.setActif(true);
+    	    		j1.jouer();
+    	    		j2.jouer();
+    	    		j2.jouer();
+    	    		j2.jouer();
+    	    		cycle++;
+    	    		Thread.sleep(1000);
+    	    		if(j1.getPoints() >= 10){win = true; winner = j1.getNom();}
+    		    break;
+    		  case 2:
+	  			  	tour++;
+	  			  	System.out.println("Tour n°"+tour);
+    			  	j2.setActif(true);
+    	    		j1.jouer();
+    	    		j2.jouer();
+    	    		j2.jouer();
+    	    		j2.jouer();
+    	    		cycle++;
+    	    		Thread.sleep(1000);
+    	    		if(j2.getPoints() >= 10){win = true; winner = j2.getNom();}
+    		    break;
+    		  case 3:
+	  			  	tour++;
+	  			  	System.out.println("Tour n°"+tour);
+    			  	j3.setActif(true);
+	  	    		j1.jouer();
+	  	    		j2.jouer();
+	  	    		j3.jouer();
+	  	    		j4.jouer();
+	  	    		cycle++;
+	  	    		Thread.sleep(1000);
+    	    		if(j3.getPoints() >= 10){win = true; winner = j3.getNom();}
+    		    break;
+    		  case 4:
+	  			  	tour++;
+	  			  	System.out.println("Tour n°"+tour);
+    			  	j4.setActif(true);
+	  	    		j1.jouer();
+	  	    		j2.jouer();
+	  	    		j3.jouer();
+	  	    		j4.jouer();
+	  	    		cycle = 1;
+	  	    		Thread.sleep(1000);
+    	    		if(j4.getPoints() >= 10){win = true; winner = j4.getNom();}
+      		    break;
+    		  default:
+    		}	
     	}
+    	
+    	System.out.println("Le Joueur"+winner+" à gagner !");
+    	
     }
     
-	 public static void main(String[] args)
+	 public static void main(String[] args) throws InterruptedException
 	 {
 		 Partie p = new Partie(4);
-		 p.start();
+		 p.play();
+		 
+		 
 	 }
     
     
