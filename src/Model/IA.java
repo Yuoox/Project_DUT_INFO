@@ -3,17 +3,21 @@
 import java.awt.Color;
 import java.util.ArrayList;
 
+import com.modeliosoft.modelio.javadesigner.annotations.objid;
+
 import View.main;
 
-public class IA  {
+@objid ("4e4afb2e-b7b8-4c8d-8001-5f57c7b736a8")
+public class IA {
 	
-	 private static String[] nom_IA = {"Robot Paul", "Robot Sene", "Robot Jordan","Robot Bassam","Robot Eva", "Robot Bernadette"};
+	private static String[] nom_IA = {"Robot Paul", "Robot Sene", "Robot Jordan","Robot Julie","Robot Eva", "Robot Bernadette"};
 
 	private int id_joueur ;
 	private String nom ;
 	private Color color ;
 	private boolean actif ;
 	private int points ;
+	private Thread jouer;
 	private ArrayList<Ressources> liste_ressources = new ArrayList<Ressources>();
 	private ArrayList<pieceConst> liste_pieces = new ArrayList<pieceConst>();
 	
@@ -25,6 +29,12 @@ public class IA  {
         this.points = 0 ;
 		this.liste_ressources = (ArrayList<Ressources>) initialiser_ressources();
 		this.liste_pieces = (ArrayList<pieceConst>) initialiser_pieces();
+		this.jouer = new Thread(){
+			public void run(){
+				//le code de l'IA
+				System.out.println("je suis une IA");
+			}
+		};
     }
     
     public ArrayList<pieceConst> initialiser_pieces()
@@ -128,4 +138,14 @@ public class IA  {
 	public void setActif(boolean actif) {
 		this.actif = actif;
 	}
+
+	public Thread getJouer() {
+		return jouer;
+	}
+
+	public void setJouer(Thread jouer) {
+		this.jouer = jouer;
+	}
+	
+	
 }

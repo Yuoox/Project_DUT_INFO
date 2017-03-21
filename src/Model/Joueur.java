@@ -8,17 +8,19 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 import View.MenuPrincipal;
 import View.main;
 
-public class Joueur implements Serializable{
+public class Joueur implements Serializable {
 
 	private int idJoueur ;
 	private String nom ;
 	private String mdp ;
 	private Color color ;
 	private boolean actif ;
+	private boolean next ; // nous sert pour dire qu'un tour est fini
 	private ArrayList<Ressources> liste_ressources = new ArrayList<Ressources>();
 	private ArrayList<pieceConst> liste_pieces = new ArrayList<pieceConst>();
 	private int points ;
@@ -33,6 +35,18 @@ public class Joueur implements Serializable{
 		this.points = 0 ;
 		this.liste_ressources = (ArrayList<Ressources>) initialiser_ressources();
 		this.liste_pieces = (ArrayList<pieceConst>) initialiser_pieces();
+	}
+	
+	
+	public Joueur(int idJoueur, String nom, boolean actif)
+	{
+		this.idJoueur = idJoueur ;
+		this.nom = nom ;
+		this.color = null ;
+		this.actif = actif ;
+		this.points = 0 ;
+		this.liste_ressources = (ArrayList<Ressources>) initialiser_ressources();
+		this.liste_pieces = (ArrayList<pieceConst>) initialiser_pieces(); 
 	}
 	
 	public ArrayList<pieceConst> initialiser_pieces()
@@ -60,7 +74,7 @@ public class Joueur implements Serializable{
 	}
 
 	public void setPoints(int points) {
-		this.points = points;
+		this.points += points;
 	}
 
 	public Color getColor() {
@@ -103,6 +117,37 @@ public class Joueur implements Serializable{
 		this.actif = actif;
 	}
 	
+	
+	public boolean isNext() {
+		return next;
+	}
+
+
+	public void setNext(boolean next) {
+		this.next = next;
+	}
+
+
+	public ArrayList<Ressources> getListe_ressources() {
+		return liste_ressources;
+	}
+
+
+	public void setListe_ressources(ArrayList<Ressources> liste_ressources) {
+		this.liste_ressources = liste_ressources;
+	}
+
+
+	public ArrayList<pieceConst> getListe_pieces() {
+		return liste_pieces;
+	}
+
+
+	public void setListe_pieces(ArrayList<pieceConst> liste_pieces) {
+		this.liste_pieces = liste_pieces;
+	}
+
+
 	public static int ajouter_joueur(String pseudo, String mdp)
 	{
 		if(pseudo.equals("") && mdp.equals(""))
@@ -216,6 +261,26 @@ public class Joueur implements Serializable{
 					}
 		}
 	}
+	
+	public void jouer(){	
+
+		
+			Random rand = new Random();
+			int nb = rand.nextInt(3 - 1 + 1) + 1;
+			System.out.println("j'ai obtenu "+nb+" point");
+			this.setPoints(nb);
+			System.out.println(this.getNom()+" : mon score : "+this.getPoints()+"\n");
+			this.setActif(false);
+			
+			// lancer les dés
+			// jouer cartes
+			// construire / placer
+			// commerce interieur
+			// commerce maritime
+		
+
+	}
+	
 	 
 	 public static void main(String[] args)
 	 {

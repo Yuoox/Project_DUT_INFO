@@ -169,7 +169,7 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 			int niv_IA = IA+1 ;
 			int nb_j = nb_joueurs+3;
 			Partie p = new Partie(nb_j,niv_IA,main.joueur_actif);
-			main.p = p ;
+			main.p = p;
 			return true ;
 		}
 	}

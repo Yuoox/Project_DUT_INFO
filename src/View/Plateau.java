@@ -553,8 +553,7 @@ public class Plateau extends JFrame {
 	          };
 	          
 		lancer.start();
-		
-		
+			
 	}
 	
 	public void initialiser_colonies()
