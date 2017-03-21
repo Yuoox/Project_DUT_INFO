@@ -7,7 +7,7 @@ import View.main;
 
 public class IA  {
 	
-	 private static String[] nom_IA = {"Robot Paul", "Robot Sene", "Robot Jordan","Robot Julie","Robot Eva", "Robot Bernadette"};
+	 private static String[] nom_IA = {"Robot Paul", "Robot Sene", "Robot Jordan","Robot Bassam","Robot Eva", "Robot Bernadette"};
 
 	private int id_joueur ;
 	private String nom ;

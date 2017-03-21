@@ -4,25 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import javax.swing.JLabel;
+
 public class M_plateau extends Cases{
 	
-	/*private int plateau_pion[][] = {
-			{ 0 , 1 , 1 , 1 , 0},
-			{ 0 , 1 , 1 , 1 , 1},
-			{ 1 , 1 , 1 , 1 , 1},
-			{ 0 , 1 , 1 , 1 , 1},
-			{ 0 , 1 , 1 , 1 , 0}
-	};
-	
-	private int plateau_cases[][] = {
-			{ 0 , -1 , -1 , -1 , 0},
-			{ 0 , -1 , -1 , -1 , 1},
-			{ -1 , -1 , desert , -1 , -1},
-			{ 0 , -1 , -1 , -1 , 1},
-			{ 0 , -1 , -1 , -1 , 0}
-	};*/
-	
-	private Cases[][] plateau =new Cases[5][5];/* = /*{
+	public ArrayList<Point> liste_coordonnees_colo = new ArrayList<Point>();
+	public ArrayList<JLabel> liste_colo = new ArrayList<JLabel>();
+	public ArrayList<Point> liste_coordonnees_route = new ArrayList<Point>();
+	public ArrayList<JLabel> liste_route = new ArrayList<JLabel>();
+	private Cases[][] plateau =new Cases[5][5];/* = {
 			{null, new Cases(),new Cases(), new Cases(), null},
 			{null, new Cases(), new Cases(), new Cases(), new Cases()},
 			{new Cases(), new Cases(), new Cases(10,5,-1), new Cases(), new Cases()},

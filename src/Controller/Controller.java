@@ -26,6 +26,7 @@ import Model.IA;
 import Model.Joueur;
 import Model.M_plateau;
 import Model.Partie;
+import Model.Point;
 import View.Accueil;
 import View.Informations;
 import View.Inscription;
@@ -274,7 +275,7 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 		if(this.vue_plateau!=null)
 		{
 			if(e.getSource().equals(this.vue_plateau.getBtnTest()))
-			{	this.placer_points(332,128,3);
+			{	/*this.placer_points(332,128,3);
 				this.placer_points(265,169,4);
 				this.placer_points(265,253,4);
 				this.placer_points(198,294,5);
@@ -285,7 +286,19 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 				this.placer_points(198,633,5);
 				this.placer_points(265,673,4);
 				this.placer_points(265,758,4);
-				this.placer_points(331,798,3);
+				this.placer_points(331,798,3);*/
+				for(int i=0;i<this.vue_plateau.liste_colo.size();i++)
+				{
+					JLabel colo = this.vue_plateau.liste_colo.get(i);
+					colo.setVisible(false);
+					this.vue_plateau.liste_colo.set(i, colo);
+					this.vue_plateau.getPanel_plateau().repaint();
+					this.vue_plateau.getPanel_plateau().revalidate();
+					
+				}
+				/*ArrayList<JLabel> liste = new ArrayList<JLabel>();
+				liste = this.placer_label(332, 158, 3, liste);*/
+				
 			}
 			if(e.getSource().equals(this.vue_plateau.getButton()))
 			{	
@@ -398,6 +411,7 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
                 System.out.println("position xs x : " + e.getX() + ", position y : " + e.getY());
                 Graphics2D g = (Graphics2D) this.vue_plateau.getLabel_fond().getGraphics();
                 
+                /*
                 if(points>0)
                 {
 			        //if((e.getModifiers()&InputEvent.BUTTON1_MASK)!=0){    
@@ -426,11 +440,13 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 			                points++ ;
 			            }
 			            g.dispose();
-			       // }
+			       // }*/
+					rechercher_colonies(e.getX(),e.getY());
+					afficher_route(rechercher_route(e.getX(),e.getY()),"Orange");
                 }
-			}
 		}
 	}
+
 
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -688,10 +704,14 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 		colonies.setLayout(null);
 		JPanel plateau = this.vue_plateau.getPanel_plateau();
 		colonies.setOpaque(false);
+		colonies.setVisible(false);
 		plateau.add(colonies);
 		this.vue_plateau.setPanel_plateau(plateau);
 		ArrayList<JLabel> liste_lab = this.vue_plateau.getListe_colonies();
 		liste_lab.add(colonies);
+		this.vue_plateau.liste_colo.add(colonies);
+		main.modele_plat.liste_colo.add(colonies);
+		main.modele_plat.liste_coordonnees_colo.add(new Point(x,y));
 		this.vue_plateau.setListe_colonies(liste_lab);
 	}
 	
@@ -700,22 +720,186 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 		ImageIcon im ;
 		String couleur = string_couleur(c);
 		im = new ImageIcon(".\\Img\\Route\\" + couleur + "_" + rot +".png");
-		System.out.println(".\\Img\\Route\\" + couleur + "_" + rot +".png");
+
 		im = new ImageIcon(im.getImage().getScaledInstance(85, 80,Image.SCALE_DEFAULT));
 	
 		JLabel route = new JLabel(im);
 		route.setHorizontalAlignment(SwingConstants.TRAILING);
-		route.setBounds(x, y, 85, 80);
+		route.setBounds(x, y, 83, 80);
 		route.setLayout(null);
 		route.setOpaque(false);
+		route.setVisible(false);
+		route.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+		System.out.println("x1 : " + x + "y1 : " + y);
 		JPanel plateau = this.vue_plateau.getPanel_plateau();
 		plateau.add(route);
 		this.vue_plateau.setPanel_plateau(plateau);
 		ArrayList<JLabel> liste_lab = this.vue_plateau.getListe_routes();
 		liste_lab.add(route);
 		this.vue_plateau.setListe_routes(liste_lab);
+		main.modele_plat.liste_coordonnees_route.add(new Point(x,y));
+		main.modele_plat.liste_route.add(route);
 		System.out.println("cc");
 		
 	}
+	/*
+	public ArrayList<JLabel> placer_label(int x,int y,int quantite,ArrayList<JLabel> liste)
+	{
+		for(int i=0;i<quantite;i++,x+=133)
+		{
+			JLabel route = new JLabel();
+			route.setHorizontalAlignment(SwingConstants.TRAILING);
+			route.setBounds(x, y, 85, 80);
+			route.setLayout(null);
+			route.setOpaque(false);
+
+		}		
+		return liste ;
+	}*/
+	
+	public int rechercher_colonies(int x, int y)
+	{
+		int result = -1 ;
+		for(int i=0;i<main.modele_plat.liste_coordonnees_colo.size();i++)
+		{
+			Point p = main.modele_plat.liste_coordonnees_colo.get(i);
+			if((x <=p.x+15 && x>=p.x-15) && (y<=p.y+15 && y>=p.y-15))
+			{
+				main.modele_plat.liste_colo.get(i).setVisible(false);
+				result = i ;
+			}
+		}
+		return result ;
+	}
+	
+	public void afficher_colonies(int ref, String couleur)
+	{
+		JLabel colonie = main.modele_plat.liste_colo.get(ref);
+		ImageIcon im = new ImageIcon(".\\Img\\Colonies\\" + couleur + ".png");
+		im = new ImageIcon(im.getImage().getScaledInstance(50, 50,Image.SCALE_DEFAULT));
+		
+		colonie.setIcon(im);
+		colonie.setVisible(true);
+		main.modele_plat.liste_colo.set(ref, colonie);
+	}
+	
+	public int rechercher_route(int x, int y)
+	{
+		int result = -1 ;
+		for(int i=0;i<main.modele_plat.liste_coordonnees_route.size();i++)
+		{
+			Point p = main.modele_plat.liste_coordonnees_route.get(i);
+			if((x <=p.x+20 && x>=p.x-5) && (y<=p.y+35 && y>=p.y-25))
+			{
+				//main.modele_plat.liste_route.get(i).setVisible(false);
+				result = i ;
+			}
+		}
+		return result ;
+	}
+	
+	public void afficher_route(int ref, String couleur)
+	{
+		System.out.println("ref : " + ref);
+		JLabel route = main.modele_plat.liste_route.get(ref);
+		int orientation = trouver_orientation(ref);
+		System.out.println("orientation : " + orientation);
+		System.out.println("x : " + route.getX() + ", y : " + route.getY());
+		//ImageIcon im = new ImageIcon(".\\Img\\Route\\" + couleur + "_"+orientation+".png");
+		//System.out.println("lien :  + .\\Img\\Route\\" + couleur + "_"+orientation+".png");
+		//im = new ImageIcon(im.getImage().getScaledInstance(85, 80,Image.SCALE_DEFAULT));
+		route.setHorizontalAlignment(SwingConstants.TRAILING);
+		//route.setIcon(im);
+		route.setLayout(null);
+
+		route.setVisible(true);
+		this.vue_plateau.liste_routes.set(ref, route);
+		main.modele_plat.liste_route.set(ref, route);
+	}
+	
+	public int trouver_orientation(int pos)
+	{
+		int orientation = -1 ;
+		switch(pos)
+		{
+			case 0: orientation = -45 ; break ;
+			case 2: orientation = -45 ; break ;
+			case 4: orientation = -45 ; break ;
+			case 10: orientation = -45 ; break ;
+			case 12: orientation = -45 ; break ;
+			case 14: orientation = -45 ; break ;
+			case 16: orientation = -45 ; break ;
+			case 23: orientation = -45 ; break ;
+			case 25: orientation = -45 ; break ;
+			case 27: orientation = -45 ; break ;
+			case 29: orientation = -45 ; break ;
+			case 31: orientation = -45 ; break ;
+			case 40: orientation = -45 ; break ;
+			case 42: orientation = -45 ; break ;
+			case 44: orientation = -45 ; break ;
+			case 46: orientation = -45 ; break ;
+			case 48: orientation = -45 ; break ;
+			case 54: orientation = -45 ;break ;
+			case 56: orientation = -45 ;break ;
+			case 58: orientation = -45 ;break ;
+			case 60: orientation = -45 ;break ;
+			
+			case 67: orientation = -45 ; break ;
+			case 69: orientation = -45 ; break ;
+			case 71: orientation = -45 ; break ;
+			
+			case 1: orientation = 45 ;break ; 
+			case 3: orientation = 45 ;break ;
+			case 5: orientation = 45 ;break ;
+			case 11: orientation = 45 ;break ;
+			case 13: orientation = 45 ;break ;
+			case 15: orientation = 45 ;break ;
+			case 17: orientation = 45 ;break ; 
+			case 24: orientation = 45 ;break ;
+			case 26: orientation = 45 ;break ;
+			case 28: orientation = 45 ;break ;
+			case 30: orientation = 45 ;break ;
+			case 32: orientation = 45 ;break ;
+			case 39: orientation = 45 ;break ;
+			case 41: orientation = 45 ;break ;
+			case 43: orientation = 45 ;break ;
+			case 45: orientation = 45 ;break ;
+			case 47: orientation = 45 ;break ;
+			case 55: orientation = 45 ; break ;
+			case 57: orientation = 45 ; break ;
+			case 59: orientation = 45 ; break ;
+			case 61: orientation = 45 ; break ;
+			case 66: orientation = 45 ;break ;
+			case 68: orientation = 45 ;break ;
+			case 70 : orientation = 45 ;break ;
+			
+			case 6: orientation = 180 ;break ;
+			case 7: orientation = 180 ;break ; 
+			case 8: orientation = 180 ;break ;
+			case 9: orientation = 180 ;break ;
+			case 18: orientation = 180 ;break ;
+			case 19: orientation = 180 ;break ; 
+			case 20: orientation = 180 ;break ; 
+			case 21: orientation = 180 ;break ; 
+			case 22: orientation = 180 ;break ; 
+			case 33: orientation = 180 ;break ;
+			case 34: orientation = 180 ;break ; 
+			case 35: orientation = 180 ;break ; 
+			case 36: orientation = 180 ;break ; 
+			case 37: orientation = 180 ;break ; 
+			case 38: orientation = 180 ;break ; 
+			case 49: orientation = 180 ;break ;
+			case 50: orientation = 180 ;break ; 
+			case 51: orientation = 180 ;break ;
+			case 52: orientation = 180 ;break ; 
+			case 53: orientation = 180 ;break ; 
+			case 62: orientation = 180 ;break ; 
+			case 63: orientation = 180 ;break ; 
+			case 64: orientation = 180 ;break ; 
+			case 65: orientation = 180 ; break ;		
+		}
+		return orientation ;
+	}
+	
 
 }

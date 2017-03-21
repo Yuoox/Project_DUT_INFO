@@ -94,9 +94,9 @@ public class Partie {
     	switch(couleur)
     	{
 	    	case "Orange" : tab[0] = 532 ; tab[1] = 659 ; tab[2] = 252 ; tab[3] = 490; break;
-	    	case "Rouge" : tab[0] = 399 ; tab[1] = 676; tab[2] = 598 ; tab[3] = 547 ; break ;
+	    	case "Rouge" : tab[0] = 399 ; tab[1] = 659; tab[2] = 598 ; tab[3] = 547 ; break ;
 	    	case "Bleu" : tab[0] = 389 ; tab[1] = 245; tab[2] = 389 ; tab[3] = 411 ; break ;
-	    	case "Blanc" : tab[0] = 658 ; tab[1] = 409; tab[2] = 533 ; tab[3] = 168 ; break ;
+	    	case "Blanc" : tab[0] = 658 ; tab[1] = 409; tab[2] = 531 ; tab[3] = 158 ; break ;
     	}
     	
     	return tab ;

@@ -2,6 +2,8 @@ package Model;
 
 import java.util.ArrayList;
 
+import javax.swing.JLabel;
+
 public class Cases {
 	
 	
@@ -14,7 +16,7 @@ public class Cases {
 	protected int id ;
 	protected int type ;
 	protected int pion ;
-	protected ArrayList<pieceConst> liste_colonies = new ArrayList<pieceConst>();
+	protected JLabel[][] colonies = new JLabel[2][4] ;
 	
 	public Cases(int id, int type, int pion)
 	{
@@ -30,11 +32,4 @@ public class Cases {
 		this.type = -1 ;
 		this.pion = -1 ;
 	}
-	
-	public void initialiser()
-	{
-		this.liste_colonies.add(null);
-	}
-
-
 }

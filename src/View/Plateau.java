@@ -45,7 +45,8 @@ public class Plateau extends JFrame {
 	private ArrayList<JLabel> liste_cases_lbl = new ArrayList<JLabel>();
 	private ArrayList<JLabel> liste_pion_lbl = new ArrayList<JLabel>();
 	private ArrayList<JLabel> liste_colonies = new ArrayList<JLabel>();
-	private ArrayList<JLabel> liste_routes = new ArrayList<JLabel>();
+	public ArrayList<JLabel> liste_routes = new ArrayList<JLabel>();
+	public ArrayList<JLabel> liste_colo = new ArrayList<JLabel>();
 	private Controller controleur ;
 	
 	private boolean test_plat = false ;
@@ -226,7 +227,27 @@ public class Plateau extends JFrame {
 		label_couleur_IA3.setBounds(12, 93, 271, 16);
 		panel_IA3.add(label_couleur_IA3);
 		/** FIN DEFINITION JLABELS **/
+		initialiser_colonies();
+		initialiser_routes();
+		controleur.afficher_colonies(controleur.rechercher_colonies(265,512),"Orange");
+		controleur.afficher_colonies(controleur.rechercher_colonies(526,668),"Orange");
+		controleur.afficher_colonies(controleur.rechercher_colonies(393,668),"Rouge");
+		controleur.afficher_colonies(controleur.rechercher_colonies(594,541),"Rouge");
+		controleur.afficher_colonies(controleur.rechercher_colonies(392,248),"Bleu");
+		controleur.afficher_colonies(controleur.rechercher_colonies(392,416),"Bleu");
+		controleur.afficher_colonies(controleur.rechercher_colonies(658,416),"Blanc");
+		controleur.afficher_colonies(controleur.rechercher_colonies(526,166),"Blanc");
 		
+		controleur.afficher_route(controleur.rechercher_route(279, 501), "Orange");
+		controleur.afficher_route(controleur.rechercher_route(550, 643), "Orange");
+		controleur.afficher_route(controleur.rechercher_route(411, 380), "Bleu");
+		controleur.afficher_route(controleur.rechercher_route(411, 259), "Bleu");
+		controleur.afficher_route(controleur.rechercher_route(690, 380), "Blanc");
+		controleur.afficher_route(controleur.rechercher_route(520, 190), "Blanc");
+		controleur.afficher_route(controleur.rechercher_route(620, 501), "Rouge");
+		controleur.afficher_route(controleur.rechercher_route(354, 622), "Rouge");
+
+		/*
 		int[] test = main.p.initialiser_position_colonies(Color.ORANGE);
 		controleur.placer_colonies(Color.ORANGE,test[0],test[1]);
 		controleur.placer_colonies(Color.ORANGE,test[2],test[3]);
@@ -239,8 +260,9 @@ public class Plateau extends JFrame {
 		test = main.p.initialiser_position_colonies(Color.WHITE);
 		controleur.placer_colonies(Color.WHITE,test[0],test[1]);
 		controleur.placer_colonies(Color.WHITE,test[2],test[3]);
-		
+		*/
 		//
+		/*
 		test = main.p.initialiser_position_routes(Color.ORANGE);
 		controleur.placer_route(Color.ORANGE,test[0],test[1],-45);
 		controleur.placer_route(Color.ORANGE,test[2],test[3],45);
@@ -253,7 +275,8 @@ public class Plateau extends JFrame {
 		test = main.p.initialiser_position_routes(Color.WHITE);
 		controleur.placer_route(Color.WHITE,test[0],test[1],180);
 		controleur.placer_route(Color.WHITE,test[2],test[3],-45);
-		
+		*/
+
 		/***** PLACEMENT DES PIONS SUR LE PLATEAU ******/
 		liste_pion_lbl.addAll(placer_pions(330,210,3,0));
 		liste_pion_lbl.addAll(placer_pions(264,333,4,1));
@@ -532,6 +555,154 @@ public class Plateau extends JFrame {
 		lancer.start();
 		
 		
+	}
+	
+	public void initialiser_colonies()
+	{
+		/*this.placer_points(332,128,3);
+		this.placer_points(265,169,4);
+		this.placer_points(265,253,4);
+		this.placer_points(198,294,5);
+		this.placer_points(198,378,5);
+		this.placer_points(131,420,6);
+		this.placer_points(131,506,6);
+		this.placer_points(198,546,5);
+		this.placer_points(198,633,5);
+		this.placer_points(265,673,4);
+		this.placer_points(265,758,4);
+		this.placer_points(331,798,3);*/
+			for(int i=0,x=327;i<3;i++,x+=133)
+			{
+				controleur.placer_colonies(Color.red, x , 128);
+			}
+			for(int i=0,x=260;i<4;i++,x+=133)
+			{
+				controleur.placer_colonies(Color.red, x , 166);
+			}
+			for(int i=0,x=260;i<4;i++,x+=133)
+			{
+				controleur.placer_colonies(Color.red, x , 248);
+			}
+			for(int i=0,x=195;i<5;i++,x+=133)
+			{
+				controleur.placer_colonies(Color.red, x , 290);
+			}
+			for(int i=0,x=195;i<5;i++,x+=133)
+			{
+				controleur.placer_colonies(Color.red, x , 374);
+			}
+			for(int i=0,x=126;i<6;i++,x+=133)
+			{
+				controleur.placer_colonies(Color.red, x , 416);
+			}
+			for(int i=0,x=126;i<6;i++,x+=133)
+			{
+				controleur.placer_colonies(Color.red, x , 502);
+			}
+			for(int i=0,x=195;i<5;i++,x+=133)
+			{
+				controleur.placer_colonies(Color.red, x , 541);
+			}
+			for(int i=0,x=195;i<5;i++,x+=133)
+			{
+				controleur.placer_colonies(Color.red, x , 628);
+			}
+			for(int i=0,x=260;i<4;i++,x+=133)
+			{
+				controleur.placer_colonies(Color.red, x , 668);
+			}
+			for(int i=0,x=260;i<4;i++,x+=133)
+			{
+				controleur.placer_colonies(Color.red, x , 753);
+			}
+			for(int i=0,x=326;i<3;i++,x+=133)
+			{
+				controleur.placer_colonies(Color.red, x , 790);
+			}
+	}
+	
+	public void initialiser_routes()
+	{
+			/** / \ */
+			for(int i=0,x=272;i<3;i++,x+=133)
+			{
+				controleur.placer_route(Color.red, x , 123,-45);
+			}
+			for(int i=0,x=340;i<3;i++,x+=133)
+			{
+				controleur.placer_route(Color.red, x , 123,45);
+			}
+			/** | */
+			for(int i=0,x=240;i<4;i++,x+=133)
+			{
+				controleur.placer_route(Color.red, x , 190,180);
+			}
+			/** / \ */
+			for(int i=0,x=210;i<4;i++,x+=133)
+			{
+				controleur.placer_route(Color.red, x , 259,-45);
+			}
+			for(int i=0,x=272;i<4;i++,x+=133)
+			{
+				controleur.placer_route(Color.red, x , 259,45);
+			}
+			/** | */
+			for(int i=0,x=175;i<5;i++,x+=133)
+			{
+				controleur.placer_route(Color.red, x , 320,180);
+			}
+			/** / \ */
+			for(int i=0,x=146;i<5;i++,x+=133)
+			{
+				controleur.placer_route(Color.red, x , 380,-45);
+			}
+			for(int i=0,x=210;i<5;i++,x+=133)
+			{
+				controleur.placer_route(Color.red, x , 380,45);
+			}
+			/** | */
+			for(int i=0,x=110;i<6;i++,x+=133)
+			{
+				controleur.placer_route(Color.red, x , 439,180);
+			}
+			/** / \ */
+			for(int i=0,x=210;i<5;i++,x+=133)
+			{
+				controleur.placer_route(Color.red, x , 501,-45);
+			}
+			for(int i=0,x=146;i<5;i++,x+=133)
+			{
+				controleur.placer_route(Color.red, x , 501,45);
+			}
+			/** | */
+			for(int i=0,x=175;i<5;i++,x+=133)
+			{
+				controleur.placer_route(Color.red, x , 568,180);
+			}
+			/** / \ */
+			for(int i=0,x=272;i<4;i++,x+=133)
+			{
+				controleur.placer_route(Color.red, x , 622,-45);
+			}
+			for(int i=0,x=210;i<4;i++,x+=133)
+			{
+				controleur.placer_route(Color.red, x , 622,45);
+			}
+			/** | */
+			for(int i=0,x=240;i<4;i++,x+=133)
+			{
+				controleur.placer_route(Color.red, x , 689,180);
+			}
+			/** / \ */
+			for(int i=0,x=338;i<3;i++,x+=133)
+			{
+				controleur.placer_route(Color.red, x , 743,-45);
+			}
+			for(int i=0,x=274;i<3;i++,x+=133)
+			{
+				controleur.placer_route(Color.red, x , 743,45);
+			}
+			
 	}
 
 	public int getResultat_lancer() {
