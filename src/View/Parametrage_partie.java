@@ -27,7 +27,7 @@ import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
-public class Parametrage_partie extends JFrame /*implements ItemListener,ActionListener*/{
+public class Parametrage_partie extends JFrame {
 
 	private JLabel label_accueil ;
 	private JLabel label_a_propos ;
@@ -52,7 +52,7 @@ public class Parametrage_partie extends JFrame /*implements ItemListener,ActionL
 			public void run() {
 				try {
 					Parametrage_partie frame = new Parametrage_partie();
-					frame.setTitle("Catane : paramétrez votre partie");
+					frame.setTitle("Les colons de catane");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

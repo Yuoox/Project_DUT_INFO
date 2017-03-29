@@ -1,5 +1,6 @@
 package Model;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -10,8 +11,11 @@ public class M_plateau extends Cases{
 	
 	public ArrayList<Point> liste_coordonnees_colo = new ArrayList<Point>();
 	public ArrayList<JLabel> liste_colo = new ArrayList<JLabel>();
+	public ArrayList<String> list_couleur_colo = new ArrayList<String>();
 	public ArrayList<Point> liste_coordonnees_route = new ArrayList<Point>();
 	public ArrayList<JLabel> liste_route = new ArrayList<JLabel>();
+	public ArrayList<String> liste_couleur_route = new ArrayList<String>();
+	public ArrayList<Integer> liste_orientation_route = new ArrayList<Integer>();
 	private Cases[][] plateau =new Cases[5][5];/* = {
 			{null, new Cases(),new Cases(), new Cases(), null},
 			{null, new Cases(), new Cases(), new Cases(), new Cases()},
@@ -66,6 +70,7 @@ public class M_plateau extends Cases{
 					String cases = "" ;
 					switch(val)
 					{
+						case 1 : cases = "pature" ; break ;
 						case 2 : cases = "foret" ; break;
 						case 3 : cases = "champ" ; break;
 						case 4 : cases = "colline" ;break;

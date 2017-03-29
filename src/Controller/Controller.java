@@ -1,25 +1,23 @@
 package Controller;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import Model.IA;
@@ -45,9 +43,9 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 	public Accueil vue_accueil ;
 	public Plateau vue_plateau ;
 	
-	private int [] tabx = new int[50];
-    private int [] taby = new int[50];
-    private int points = 1 ;
+	
+	private boolean placer_route = false ;
+	private boolean placer_colonie = false ;
 	
 	public Controller(connexion vue_connexion)
 	{
@@ -169,7 +167,7 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 			int niv_IA = IA+1 ;
 			int nb_j = nb_joueurs+3;
 			Partie p = new Partie(nb_j,niv_IA,main.joueur_actif);
-			main.p = p;
+			main.p = p ;
 			return true ;
 		}
 	}
@@ -177,13 +175,11 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 
 	@Override
 	public void actionPerformed (ActionEvent e) {
-		// TODO Auto-generated method stub
-		
 		if(this.vue_connexion !=null)
 		{
 			if(e.getSource().equals(this.vue_connexion.getBouton_inscription()))
 			{
-				System.out.println("inscr");
+			//	System.out.println("inscr");
 				vue_connexion.setVisible(false);
 				Inscription.main(null);
 			}
@@ -244,6 +240,21 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 				this.vue_menu.setVisible(false);
 				Parametrage_partie.main(null);
 			}
+			if(e.getSource().equals(this.vue_menu.getBouton_regles()))
+			{
+				URI uri = URI.create("http://www.ludovalais.ch/img_docjeux/Les+colons+de+Catane.pdf");
+				try {
+					Desktop.getDesktop().browse(uri);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			if(e.getSource().equals(this.vue_menu.getBouton_charger_partie()))
+			{
+				JOptionPane.showMessageDialog(this.vue_menu, "La fonction 'charger une partie' n'est pas pas disponible.","Fonction non disponible", JOptionPane.INFORMATION_MESSAGE);
+
+			}
 		}
 		if(this.vue_parametrage!=null)
 		{
@@ -254,7 +265,7 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 				if(creer_partie(niv_IA,nb_joueurs))
 				{
 					Color c = null ; 
-					System.out.println("index : " + this.vue_parametrage.getCombo_couleur().getSelectedIndex());
+					//System.out.println("index : " + this.vue_parametrage.getCombo_couleur().getSelectedIndex());
 					switch(this.vue_parametrage.getCombo_couleur().getSelectedIndex())
 					{
 						case 0 : c = Color.ORANGE ; break; 
@@ -274,47 +285,27 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 		}
 		if(this.vue_plateau!=null)
 		{
-			if(e.getSource().equals(this.vue_plateau.getBtnTest()))
-			{	/*this.placer_points(332,128,3);
-				this.placer_points(265,169,4);
-				this.placer_points(265,253,4);
-				this.placer_points(198,294,5);
-				this.placer_points(198,378,5);
-				this.placer_points(131,420,6);
-				this.placer_points(131,506,6);
-				this.placer_points(198,546,5);
-				this.placer_points(198,633,5);
-				this.placer_points(265,673,4);
-				this.placer_points(265,758,4);
-				this.placer_points(331,798,3);*/
-				for(int i=0;i<this.vue_plateau.liste_colo.size();i++)
-				{
-					JLabel colo = this.vue_plateau.liste_colo.get(i);
-					colo.setVisible(false);
-					this.vue_plateau.liste_colo.set(i, colo);
-					this.vue_plateau.getPanel_plateau().repaint();
-					this.vue_plateau.getPanel_plateau().revalidate();
-					
-				}
-				/*ArrayList<JLabel> liste = new ArrayList<JLabel>();
-				liste = this.placer_label(332, 158, 3, liste);*/
-				
-			}
 			if(e.getSource().equals(this.vue_plateau.getButton()))
 			{	
 		    	  try {
 					this.vue_plateau.lancer_des();
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}	
+			}
+			if(e.getSource().equals(this.vue_plateau.getBouton_construire_route()))
+			{
+				placer_route = true ;
+			}
+			if(e.getSource().equals(this.vue_plateau.getBouton_construire_colonie()))
+			{
+				placer_colonie = true ;
 			}
 		}
 	}
 
 	@Override
 	public void itemStateChanged(ItemEvent arg0) {
-		// TODO Auto-generated method stub
 		if(this.vue_parametrage!=null)
 		{
 			if(arg0.getSource().equals(this.vue_parametrage.getCombo_couleur()))
@@ -323,11 +314,8 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 				{
 					case 0 : this.vue_parametrage.mise_a_jour_textpane(Color.ORANGE);break ;
 					case 1 : this.vue_parametrage.mise_a_jour_textpane(Color.RED);break ;
-					//case 2 : this.vue_parametrage.mise_a_jour_textpane(Color.GREEN);break ;
 					case 2 : this.vue_parametrage.mise_a_jour_textpane(Color.BLUE);break ;
-					//case 4 : this.vue_parametrage.mise_a_jour_textpane(Color.YELLOW);break ;
 					case 3 : this.vue_parametrage.mise_a_jour_textpane(Color.WHITE);break ;
-					//case 6 : this.vue_parametrage.mise_a_jour_textpane(Color.BLACK);break ;
 				}
 			}
 		}
@@ -335,7 +323,6 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
 		if(this.vue_accueil!=null)
 		{
 			if(e.getSource().equals(this.vue_accueil.getLabel_a_propos()))
@@ -374,10 +361,11 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 			}
 			if(e.getSource().equals(this.vue_inscription.getLabel_r_accueil()))
 			{
+				this.vue_inscription.setVisible(false);
 				Accueil.main(null);
 			}
 		}
-		
+		/** DEBUT ACTION LABEL SUR LA VUE MENU **/
 		if(this.vue_menu!=null)
 		{
 			if(e.getSource().equals(this.vue_menu.getLabel_a_propos()))
@@ -390,9 +378,11 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 					Accueil.main(null);
 				else
 					JOptionPane.showMessageDialog(this.vue_menu, "Vous êtes déjà a l'accueil en mode connecté.","Inscription réussie", JOptionPane.INFORMATION_MESSAGE);
-
 			}
 		}
+		/** FIN ACTION LABEL SUR LA VUE MENU **/
+		
+		
 		if(this.vue_parametrage!=null)
 		{
 			if(e.getSource().equals(this.vue_parametrage.getLabel_a_propos()))
@@ -401,6 +391,7 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 			}
 			if(e.getSource().equals(this.vue_parametrage.getLabel_r_accueil()))
 			{
+				this.vue_parametrage.setVisible(false);
 				MenuPrincipal.main(null);
 			}
 		}
@@ -408,61 +399,85 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 		{
 			if(e.getSource().equals(this.vue_plateau.getLabel_fond()))
 			{
-                System.out.println("position xs x : " + e.getX() + ", position y : " + e.getY());
-                Graphics2D g = (Graphics2D) this.vue_plateau.getLabel_fond().getGraphics();
+				System.out.println("coordonnées X : " + e.getX() + "  |   Y : " + e.getY());
+				if(placer_route)
+				{
+					int i = rechercher_colonies_pour_route(e.getX(),e.getY());
+					if(i>-1)
+					{
+						if(this.vue_plateau.liste_colo.get(i).isVisible())
+						{
+							//System.out.println("une route autour ? : " +trouver_route_pour_route(e.getX(),e.getY()));
+							if(main.modele_plat.list_couleur_colo.get(i).equals(string_couleur(main.joueur_actif.getColor())))
+							{
+								afficher_route(rechercher_route(e.getX(),e.getY()),string_couleur(main.joueur_actif.getColor()));
+							}
+						}
+					}
+					if(trouver_route_pour_route(e.getX(),e.getY()))
+					{
+						int id_route = trouver_route_pour_route_2(e.getX(),e.getY());
+						if(id_route>-1)
+						{
+							if(!this.vue_plateau.liste_routes.get(id_route).isVisible())
+							{
+								if(main.modele_plat.liste_couleur_route.get(id_route).equals(string_couleur(main.joueur_actif.getColor())))
+								{
+									int id = rechercher_route(e.getX(),e.getY());
+									if(id>-1)
+										afficher_route(id,string_couleur(main.joueur_actif.getColor()));
+									//else
+									//	System.out.println(" je trouve pas la route demandée");
+							
+								}
+							}
+						}
+					}
+						
+				}
+				if(placer_colonie)
+				{
+					//System.out.println("je peux placer ? -> " + test_poser_colonies(e.getX(),e.getY()));
+					if(test_poser_colonies(e.getX(),e.getY()))
+					{
+						int id_colo = rechercher_colonies(e.getX(),e.getY());
+						if(id_colo>-1)
+							afficher_colonies(id_colo,string_couleur(main.joueur_actif.getColor()));
+					}
+				}
+					
+               // System.out.println("position xs x : " + e.getX() + ", position y : " + e.getY());
                 
-                /*
-                if(points>0)
-                {
-			        //if((e.getModifiers()&InputEvent.BUTTON1_MASK)!=0){    
-			        	//System.out.println("cc 1");
-			            tabx [points]= e.getX();                                                      
-			            taby [points] = e.getY();  
-			           // System.out.println("position x : " + e.getX() + ", position y : " + e.getY());
-			            g.drawOval(e.getX(),e.getY(), 5, 5);  
-			            
-			            if (tabx.length%2==0)
-			            {               
-			            	//System.out.println("cc 2");
-			            	if((tabx[points-1]-10 <= 266 && tabx[points-1]+10 >= 266 )
-			            		&& (taby[points-1]-10 <= 173 && taby[points-1]+10 >= 173)
-			            		&& (tabx[points]-10 <= 330 && tabx[points]+10 >=330 )
-			            		&& (taby[points]-10 <= 133 && taby[points]+10 >= 133 )
-			            		)
-			            	{
-			            		//System.out.println("cc 2");
-			            		this.vue_plateau.repaint(e.getX(),e.getY(),7,7);
-				            	g.setPaint(Color.BLUE);
-				                g.setStroke(new BasicStroke(8));
-				               // g.drawLine(tabx [points-1],taby [points-1]+20, tabx [points], taby [points]+20);
-				                g.drawLine(266,177, 330, 133);
-			                }
-			                points++ ;
-			            }
-			            g.dispose();
-			       // }*/
-					rechercher_colonies(e.getX(),e.getY());
-					afficher_route(rechercher_route(e.getX(),e.getY()),"Orange");
-                }
+                //rechercher_colonies(e.getX(),e.getY());
+				/*int i = rechercher_colonies_pour_route(e.getX(),e.getY());
+				if(i>-1)
+				{
+					System.out.println("l'id de la colonie est : " + i + ", la couleur est : " + this.vue_plateau.liste_colo.get(i).isVisible());
+					
+					if(this.vue_plateau.liste_colo.get(i).isVisible())
+					{
+						System.out.println("couleur joueur : " + string_couleur(main.joueur_actif.getColor()) );
+						System.out.println("couleur colonies : " + main.modele_plat.list_couleur_colo.get(i) );
+						if(main.modele_plat.list_couleur_colo.get(i).equals(string_couleur(main.joueur_actif.getColor())))
+							afficher_route(rechercher_route(e.getX(),e.getY()),string_couleur(main.joueur_actif.getColor()));
+					}
+				}
+				System.out.println("je peux placer ? -> " + test_poser_colonies(e.getX(),e.getY()));	*/
+			}
 		}
 	}
 
-
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
+	/** action sur les jlabel **/
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 		if(this.vue_accueil!=null)
 		{
 			if(e.getSource().equals(this.vue_accueil.getLabel_a_propos()))
@@ -561,11 +576,9 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 			}
 		}
 	}
-
+	/** action sur les label **/
 	@Override
 	public void mouseExited(MouseEvent e) {
-		
-		// TODO Auto-generated method stub
 		if(this.vue_accueil!=null)
 		{
 			if(e.getSource().equals(this.vue_accueil.getLabel_a_propos()))
@@ -662,22 +675,7 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 
 	}
 	
-	public void placer_points(int x,int y, int nb_points)
-	{
-		int tab[] = new int[10];
-		for(int i=0,j=x;i<nb_points;i++,j+=133)
-		{
-			 Graphics2D g = (Graphics2D) this.vue_plateau.getLabel_fond().getGraphics();
-			 g.drawOval(j,y, 15, 15);  
-			 tab[i] = j ;
-		}
-		for(int i=0;i<tab.length;i++)
-		{
-			System.out.print(tab[i]+",");
-		}
-		System.out.println("");
-	}
-	
+	/** Retourne un String de la couleur en paramètres */
 	public static String string_couleur(Color c)
 	{
 		if(c.equals(Color.ORANGE))
@@ -691,11 +689,11 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 		return null;
 	}
 	
+	/** cette fonction permet de placer une colonie de couleur c aux coordonnées X et Y 
+	 * (utilisée lors de l'initialisation du plateau) */
 	public void placer_colonies(Color c,int x, int y)
 	{
-		ImageIcon im ;
-		String couleur = string_couleur(c);
-		im = new ImageIcon(".\\Img\\Colonies\\" + couleur + ".png");
+		ImageIcon im = new ImageIcon(".\\Img\\Colonies\\" + string_couleur(c) + ".png");
 		im = new ImageIcon(im.getImage().getScaledInstance(50, 50,Image.SCALE_DEFAULT));
 
 		JLabel colonies = new JLabel(im);
@@ -703,7 +701,6 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 		colonies.setBounds(x, y, 50, 50);
 		colonies.setLayout(null);
 		JPanel plateau = this.vue_plateau.getPanel_plateau();
-		colonies.setOpaque(false);
 		colonies.setVisible(false);
 		plateau.add(colonies);
 		this.vue_plateau.setPanel_plateau(plateau);
@@ -712,51 +709,36 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 		this.vue_plateau.liste_colo.add(colonies);
 		main.modele_plat.liste_colo.add(colonies);
 		main.modele_plat.liste_coordonnees_colo.add(new Point(x,y));
+		main.modele_plat.list_couleur_colo.add(null);
 		this.vue_plateau.setListe_colonies(liste_lab);
 	}
 	
+	/** cette fonction permet de placer les routes à l'initialisation du plateau */
 	public void placer_route(Color c, int x, int y,int rot)
 	{
-		ImageIcon im ;
-		String couleur = string_couleur(c);
-		im = new ImageIcon(".\\Img\\Route\\" + couleur + "_" + rot +".png");
-
+		ImageIcon im = new ImageIcon(".\\Img\\Route\\" + string_couleur(c) + "_" + rot +".png");
 		im = new ImageIcon(im.getImage().getScaledInstance(85, 80,Image.SCALE_DEFAULT));
-	
+		
 		JLabel route = new JLabel(im);
 		route.setHorizontalAlignment(SwingConstants.TRAILING);
 		route.setBounds(x, y, 83, 80);
 		route.setLayout(null);
 		route.setOpaque(false);
 		route.setVisible(false);
-		route.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-		System.out.println("x1 : " + x + "y1 : " + y);
+
 		JPanel plateau = this.vue_plateau.getPanel_plateau();
 		plateau.add(route);
 		this.vue_plateau.setPanel_plateau(plateau);
 		ArrayList<JLabel> liste_lab = this.vue_plateau.getListe_routes();
 		liste_lab.add(route);
 		this.vue_plateau.setListe_routes(liste_lab);
+		main.modele_plat.liste_couleur_route.add(string_couleur(c));
 		main.modele_plat.liste_coordonnees_route.add(new Point(x,y));
+		main.modele_plat.liste_orientation_route.add(rot);
 		main.modele_plat.liste_route.add(route);
-		System.out.println("cc");
-		
 	}
-	/*
-	public ArrayList<JLabel> placer_label(int x,int y,int quantite,ArrayList<JLabel> liste)
-	{
-		for(int i=0;i<quantite;i++,x+=133)
-		{
-			JLabel route = new JLabel();
-			route.setHorizontalAlignment(SwingConstants.TRAILING);
-			route.setBounds(x, y, 85, 80);
-			route.setLayout(null);
-			route.setOpaque(false);
 
-		}		
-		return liste ;
-	}*/
-	
+	/** cette méthode permet de trouver une colonie à partir de ses coordonnées et de retourner sa reference */
 	public int rechercher_colonies(int x, int y)
 	{
 		int result = -1 ;
@@ -764,24 +746,42 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 		{
 			Point p = main.modele_plat.liste_coordonnees_colo.get(i);
 			if((x <=p.x+15 && x>=p.x-15) && (y<=p.y+15 && y>=p.y-15))
-			{
-				main.modele_plat.liste_colo.get(i).setVisible(false);
 				result = i ;
-			}
 		}
 		return result ;
 	}
 	
+	/** cette méthode permet de trouver une colonie à partir de ses coordonnées et de retourner sa reference */
+	public int rechercher_colonies_pour_route(int x, int y)
+	{
+		for(int i=0;i<main.modele_plat.liste_coordonnees_colo.size();i++)
+		{
+			Point p = main.modele_plat.liste_coordonnees_colo.get(i);
+			if((x <=p.x+100 && x>=p.x-30) && (y<=p.y+85 && y>=p.y-50))
+			{
+				if(this.vue_plateau.liste_colo.get(i).isVisible())
+					return i ;
+			}
+		}
+		return -1 ;
+	}
+	
+	/** cette fonction permet d'afficher une colonie suivant sa reference dans la liste */
 	public void afficher_colonies(int ref, String couleur)
 	{
 		JLabel colonie = main.modele_plat.liste_colo.get(ref);
+		main.modele_plat.list_couleur_colo.set(ref, couleur);
 		ImageIcon im = new ImageIcon(".\\Img\\Colonies\\" + couleur + ".png");
 		im = new ImageIcon(im.getImage().getScaledInstance(50, 50,Image.SCALE_DEFAULT));
 		
 		colonie.setIcon(im);
 		colonie.setVisible(true);
+		this.vue_plateau.liste_colo.get(ref).setVisible(true);
+		main.modele_plat.list_couleur_colo.set(ref, couleur);
 		main.modele_plat.liste_colo.set(ref, colonie);
 	}
+	
+	/** cette fonction permet de rechercher une route dans la liste de route à partir de coordonnées */
 	
 	public int rechercher_route(int x, int y)
 	{
@@ -789,9 +789,8 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 		for(int i=0;i<main.modele_plat.liste_coordonnees_route.size();i++)
 		{
 			Point p = main.modele_plat.liste_coordonnees_route.get(i);
-			if((x <=p.x+20 && x>=p.x-5) && (y<=p.y+35 && y>=p.y-25))
+			if((x <=p.x+53 && x>=p.x-11) && (y<=p.y+64 && y>=p.y-14))
 			{
-				//main.modele_plat.liste_route.get(i).setVisible(false);
 				result = i ;
 			}
 		}
@@ -800,106 +799,92 @@ public class Controller implements ActionListener,ItemListener,MouseListener {
 	
 	public void afficher_route(int ref, String couleur)
 	{
-		System.out.println("ref : " + ref);
-		JLabel route = main.modele_plat.liste_route.get(ref);
-		int orientation = trouver_orientation(ref);
-		System.out.println("orientation : " + orientation);
-		System.out.println("x : " + route.getX() + ", y : " + route.getY());
-		//ImageIcon im = new ImageIcon(".\\Img\\Route\\" + couleur + "_"+orientation+".png");
-		//System.out.println("lien :  + .\\Img\\Route\\" + couleur + "_"+orientation+".png");
-		//im = new ImageIcon(im.getImage().getScaledInstance(85, 80,Image.SCALE_DEFAULT));
-		route.setHorizontalAlignment(SwingConstants.TRAILING);
-		//route.setIcon(im);
-		route.setLayout(null);
-
-		route.setVisible(true);
-		this.vue_plateau.liste_routes.set(ref, route);
-		main.modele_plat.liste_route.set(ref, route);
-	}
-	
-	public int trouver_orientation(int pos)
-	{
-		int orientation = -1 ;
-		switch(pos)
+		if(ref>-1)
 		{
-			case 0: orientation = -45 ; break ;
-			case 2: orientation = -45 ; break ;
-			case 4: orientation = -45 ; break ;
-			case 10: orientation = -45 ; break ;
-			case 12: orientation = -45 ; break ;
-			case 14: orientation = -45 ; break ;
-			case 16: orientation = -45 ; break ;
-			case 23: orientation = -45 ; break ;
-			case 25: orientation = -45 ; break ;
-			case 27: orientation = -45 ; break ;
-			case 29: orientation = -45 ; break ;
-			case 31: orientation = -45 ; break ;
-			case 40: orientation = -45 ; break ;
-			case 42: orientation = -45 ; break ;
-			case 44: orientation = -45 ; break ;
-			case 46: orientation = -45 ; break ;
-			case 48: orientation = -45 ; break ;
-			case 54: orientation = -45 ;break ;
-			case 56: orientation = -45 ;break ;
-			case 58: orientation = -45 ;break ;
-			case 60: orientation = -45 ;break ;
-			
-			case 67: orientation = -45 ; break ;
-			case 69: orientation = -45 ; break ;
-			case 71: orientation = -45 ; break ;
-			
-			case 1: orientation = 45 ;break ; 
-			case 3: orientation = 45 ;break ;
-			case 5: orientation = 45 ;break ;
-			case 11: orientation = 45 ;break ;
-			case 13: orientation = 45 ;break ;
-			case 15: orientation = 45 ;break ;
-			case 17: orientation = 45 ;break ; 
-			case 24: orientation = 45 ;break ;
-			case 26: orientation = 45 ;break ;
-			case 28: orientation = 45 ;break ;
-			case 30: orientation = 45 ;break ;
-			case 32: orientation = 45 ;break ;
-			case 39: orientation = 45 ;break ;
-			case 41: orientation = 45 ;break ;
-			case 43: orientation = 45 ;break ;
-			case 45: orientation = 45 ;break ;
-			case 47: orientation = 45 ;break ;
-			case 55: orientation = 45 ; break ;
-			case 57: orientation = 45 ; break ;
-			case 59: orientation = 45 ; break ;
-			case 61: orientation = 45 ; break ;
-			case 66: orientation = 45 ;break ;
-			case 68: orientation = 45 ;break ;
-			case 70 : orientation = 45 ;break ;
-			
-			case 6: orientation = 180 ;break ;
-			case 7: orientation = 180 ;break ; 
-			case 8: orientation = 180 ;break ;
-			case 9: orientation = 180 ;break ;
-			case 18: orientation = 180 ;break ;
-			case 19: orientation = 180 ;break ; 
-			case 20: orientation = 180 ;break ; 
-			case 21: orientation = 180 ;break ; 
-			case 22: orientation = 180 ;break ; 
-			case 33: orientation = 180 ;break ;
-			case 34: orientation = 180 ;break ; 
-			case 35: orientation = 180 ;break ; 
-			case 36: orientation = 180 ;break ; 
-			case 37: orientation = 180 ;break ; 
-			case 38: orientation = 180 ;break ; 
-			case 49: orientation = 180 ;break ;
-			case 50: orientation = 180 ;break ; 
-			case 51: orientation = 180 ;break ;
-			case 52: orientation = 180 ;break ; 
-			case 53: orientation = 180 ;break ; 
-			case 62: orientation = 180 ;break ; 
-			case 63: orientation = 180 ;break ; 
-			case 64: orientation = 180 ;break ; 
-			case 65: orientation = 180 ; break ;		
+			JLabel route = main.modele_plat.liste_route.get(ref);
+		//	route.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+			int orientation = main.modele_plat.liste_orientation_route.get(ref);
+			ImageIcon im = new ImageIcon(".\\Img\\Route\\" + couleur + "_"+orientation+".png");
+			//System.out.println("lien :  + .\\Img\\Route\\" + couleur + "_"+orientation+".png");
+			im = new ImageIcon(im.getImage().getScaledInstance(85, 80,Image.SCALE_DEFAULT));
+			route.setHorizontalAlignment(SwingConstants.TRAILING);
+			route.setLayout(null);
+			route.setIcon(im);
+
+	
+			route.setVisible(true);
+			this.vue_plateau.liste_routes.set(ref, route);
+			main.modele_plat.liste_route.set(ref, route);
+			main.modele_plat.liste_couleur_route.set(ref, couleur);
 		}
-		return orientation ;
+		
 	}
 	
+	
+	/** on teste si on peut construire la colonie à cet endroit, on ne peut pas avoir deux colonies seulement séparées par 1 route 
+	 * on teste à partir des coordonnées du clic, et si une colonie se trouve dans une zone autour de ce clic, on ne peut pas construire.
+	 */
+	public boolean test_poser_colonies(int x, int y)
+	{
+		boolean is_ok = false ;
+		for(int i=0;i<main.modele_plat.liste_colo.size();i++)
+		{
+			if(this.vue_plateau.liste_colo.get(i).isVisible())
+			{ 	
+				Point p = main.modele_plat.liste_coordonnees_colo.get(i);
+				if((x <=p.x+95 && x>=p.x-95) && (y<=p.y+110 && y>=p.y-110))
+				{
+					is_ok = false ;
+				}
+			}
+			if(is_ok)
+			{
+				Point p = main.modele_plat.liste_coordonnees_colo.get(i);
+				if((x <=p.x+60 && x>=p.x-80) && (y<=p.y+60 && y>=p.y-80))
+				{
+					//System.out.println("je peux construire via route ?");
+					is_ok = true ;
+				}
+			}
+		}
+		return is_ok ;
+	}
+	
+	public boolean trouver_route_pour_route(int x, int y)
+	{
+		for(int i=0;i<main.modele_plat.liste_coordonnees_route.size();i++)
+		{
+			Point p = main.modele_plat.liste_coordonnees_route.get(i);
+			if((x <=p.x+150 && x>=p.x-150) && (y<=p.y+170 && y>=p.y-170))
+			{
+				return true ;
+			}
+		}
+		return false ;
+		
+	}
+	
+	public int trouver_route_pour_route_2(int x, int y)
+	{
+		for(int i=0;i<main.modele_plat.liste_coordonnees_route.size();i++)
+		{
+			Point p = main.modele_plat.liste_coordonnees_route.get(i);
+			if((x <=p.x+150 && x>=p.x-150) && (y<=p.y+170 && y>=p.y-170))
+			{
+				System.out.println("route 2 : is ok");
+				int id_route = rechercher_route(x,y);
+				return id_route ;
+			/*	if(this.vue_plateau.liste_routes.get(i).isVisible() && !this.vue_plateau.liste_routes.get(id_route).isVisible())
+				{
+					System.out.println("route 2 : is ok2");
+					System.out.println("id : " + i + ",couleur route autour :" +main.modele_plat.liste_couleur_route.get(i) + "route cliquée :" + id_route);
+					if(main.modele_plat.liste_couleur_route.get(i).equals(string_couleur(main.joueur_actif.getColor())))
+						afficher_route(i, null);
+				}*/
+			}
+		}
+		return -1 ;
+		
+	}
 
 }

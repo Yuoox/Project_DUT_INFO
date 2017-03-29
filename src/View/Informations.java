@@ -25,7 +25,7 @@ public class Informations extends JFrame {
 			public void run() {
 				try {
 					Informations frame = new Informations();
-					frame.setTitle("Fenêtre d'informations");
+					frame.setTitle("Fenêtre d'information");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,7 +47,7 @@ public class Informations extends JFrame {
 		contentPane.setBackground(Color.white);
 		
 		JLabel lblApplicationDeveloppePar = new JLabel("<html>Cette application a été développée dans le cadre du projet "
-				+ "de deuxième année d'une équipe de projet de l'IUT de Valenciennes. Ce code source est l'entière propriétée"
+				+ "de deuxième année d'une équipe de projet de l'IUT de Valenciennes. Ce code source est l'entière propriété"
 				+ " de l'équipe enseignante du département informatique de l'IUT de Valenciennes.</html>");
 		lblApplicationDeveloppePar.setBounds(279, 13, 391, 194);
 		contentPane.add(lblApplicationDeveloppePar);

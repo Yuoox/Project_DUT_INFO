@@ -51,12 +51,20 @@ public class Plateau extends JFrame {
 	
 	private boolean test_plat = false ;
 	
+	public JButton getBouton_construire_colonie() {
+		return bouton_construire_colonie;
+	}
+
+	public void setBouton_construire_colonie(JButton bouton_construire_colonie) {
+		this.bouton_construire_colonie = bouton_construire_colonie;
+	}
+
 	public ImageIcon dés[];
 	public Thread lancer;
 	
 	private int resultat_lancer = 0 ;
-	JButton btnTest ;
-	JButton button;
+	private JButton btnTest ;
+	private JButton button_lances_des,bouton_construire_route,bouton_construire_colonie;
 
 	
 
@@ -86,7 +94,7 @@ public class Plateau extends JFrame {
 			//main.p = new Partie() ;
 		}
 		/** DEFINITION PARAMETRES JFRAME **/
-		setTitle("Partie Catane");
+		setTitle("Les colons de catane");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1920, 1080);
 		contentPane = new JPanel();
@@ -150,10 +158,32 @@ public class Plateau extends JFrame {
 		btnTest.addActionListener(controleur);
 		panel_action.add(btnTest);
 		
-		button = new JButton("Lancer le d\u00E8s");
-		button.setBounds(121, 26, 141, 28);
-		button.addActionListener(controleur);
-		panel_action.add(button);
+		button_lances_des = new JButton("Lancer le d\u00E8s");
+		button_lances_des.setBounds(121, 26, 141, 28);
+		button_lances_des.addActionListener(controleur);
+		panel_action.add(button_lances_des);
+		
+		JButton btnAcheterCartes = new JButton("acheter cartes");
+		btnAcheterCartes.setBounds(278, 28, 135, 25);
+		panel_action.add(btnAcheterCartes);
+		
+		JButton btnTourSuivant = new JButton("Tour suivant");
+		btnTourSuivant.setBounds(1441, 28, 97, 25);
+		panel_action.add(btnTourSuivant);
+		
+		JButton btnCommerce = new JButton("Commerce");
+		btnCommerce.setBounds(425, 28, 97, 25);
+		panel_action.add(btnCommerce);
+		
+		bouton_construire_route = new JButton("Construire route");
+		bouton_construire_route.setBounds(536, 28, 141, 25);
+		bouton_construire_route.addActionListener(controleur);
+		panel_action.add(bouton_construire_route);
+		
+		bouton_construire_colonie = new JButton("Contruire colonie");
+		bouton_construire_colonie.setBounds(700, 28, 141, 25);
+		panel_action.add(bouton_construire_colonie);
+		bouton_construire_colonie.addActionListener(controleur);
 		
 		JPanel panel_regles = new JPanel();
 		panel_regles.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.WHITE));
@@ -247,36 +277,6 @@ public class Plateau extends JFrame {
 		controleur.afficher_route(controleur.rechercher_route(620, 501), "Rouge");
 		controleur.afficher_route(controleur.rechercher_route(354, 622), "Rouge");
 
-		/*
-		int[] test = main.p.initialiser_position_colonies(Color.ORANGE);
-		controleur.placer_colonies(Color.ORANGE,test[0],test[1]);
-		controleur.placer_colonies(Color.ORANGE,test[2],test[3]);
-		test = main.p.initialiser_position_colonies(Color.RED);
-		controleur.placer_colonies(Color.RED,test[0],test[1]);
-		controleur.placer_colonies(Color.RED,test[2],test[3]);
-		test = main.p.initialiser_position_colonies(Color.BLUE);
-		controleur.placer_colonies(Color.BLUE,test[0],test[1]);
-		controleur.placer_colonies(Color.BLUE,test[2],test[3]);
-		test = main.p.initialiser_position_colonies(Color.WHITE);
-		controleur.placer_colonies(Color.WHITE,test[0],test[1]);
-		controleur.placer_colonies(Color.WHITE,test[2],test[3]);
-		*/
-		//
-		/*
-		test = main.p.initialiser_position_routes(Color.ORANGE);
-		controleur.placer_route(Color.ORANGE,test[0],test[1],-45);
-		controleur.placer_route(Color.ORANGE,test[2],test[3],45);
-		test = main.p.initialiser_position_routes(Color.RED);
-		controleur.placer_route(Color.RED,test[0],test[1],45);
-		controleur.placer_route(Color.RED,test[2],test[3],-45);
-		test = main.p.initialiser_position_routes(Color.BLUE);
-		controleur.placer_route(Color.BLUE,test[0],test[1],-45);
-		controleur.placer_route(Color.BLUE,test[2],test[3],45);
-		test = main.p.initialiser_position_routes(Color.WHITE);
-		controleur.placer_route(Color.WHITE,test[0],test[1],180);
-		controleur.placer_route(Color.WHITE,test[2],test[3],-45);
-		*/
-
 		/***** PLACEMENT DES PIONS SUR LE PLATEAU ******/
 		liste_pion_lbl.addAll(placer_pions(330,210,3,0));
 		liste_pion_lbl.addAll(placer_pions(264,333,4,1));
@@ -285,12 +285,14 @@ public class Plateau extends JFrame {
 		liste_pion_lbl.addAll(placer_pions(330,712,3,4));
 		/***** FIN DU PLACEMENT DES PIONS SUR LE PLATEAU ******/
 		
+		
 		/***** PLACEMENT DES CASES SUR LE PLATEAU ******/
 		liste_cases_lbl.addAll(placer_cases(263,166,3,0));
 		liste_cases_lbl.addAll(placer_cases(196,417,4,1));
 		liste_cases_lbl.addAll(placer_cases(130,670,5,2));
 		liste_cases_lbl.addAll(placer_cases(196,923,4,3));
 		liste_cases_lbl.addAll(placer_cases(263,1174,3,4));
+		placer_elements_mer();
 		/***** FIN DU PLACEMENT DES CASES SUR LE PLATEAU ******/
 		
 		/** DECLARATION DES BOUTONS **/
@@ -310,7 +312,7 @@ public class Plateau extends JFrame {
 		imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(1920,1080,Image.SCALE_DEFAULT));
 		contentPane.setLayout(null);
 		
-		ImageIcon image_plat = new ImageIcon(".\\Img\\test.png");
+		ImageIcon image_plat = new ImageIcon(".\\Img\\plateau_de_jeu.png");
 		image_plat = new ImageIcon(image_plat.getImage().getScaledInstance(930, 930,Image.SCALE_DEFAULT));
 		contentPane.setLayout(null);
 		
@@ -341,6 +343,25 @@ public class Plateau extends JFrame {
 		/** FIN DECLARATION DES IMAGES DE FOND **/
 	}
 	
+	
+
+	public JButton getBouton_construire_route() {
+		return bouton_construire_route;
+	}
+
+	public void setBouton_construire_route(JButton bouton_construire_route) {
+		this.bouton_construire_route = bouton_construire_route;
+	}
+
+	/** DECLARATION GETTERS ET SETTERS **/
+	public JButton getButton_lances_des() {
+		return button_lances_des;
+	}
+
+	public void setButton_lances_des(JButton button_lances_des) {
+		this.button_lances_des = button_lances_des;
+	}
+
 	public Controller getControleur() {
 		return controleur;
 	}
@@ -357,7 +378,6 @@ public class Plateau extends JFrame {
 		this.btnTest = btnTest;
 	}
 
-	/** DECLARATION GETTERS ET SETTERS **/
 	public JPanel getContentPane() 
 	{
 		return contentPane;
@@ -378,11 +398,11 @@ public class Plateau extends JFrame {
 	}
 	
 	public JButton getButton() {
-		return button;
+		return button_lances_des;
 	}
 
 	public void setButton(JButton button) {
-		this.button = button;
+		this.button_lances_des = button;
 	}
 	
 	public ArrayList<JLabel> getListe_colonies() {
@@ -393,9 +413,6 @@ public class Plateau extends JFrame {
 		this.liste_colonies = liste_colonies;
 	}
 
-	/** FIN DECLARATION GETTERS ET SETTERS **/
-
-	
 	public ArrayList<JLabel> getListe_routes() {
 		return liste_routes;
 	}
@@ -403,16 +420,16 @@ public class Plateau extends JFrame {
 	public void setListe_routes(ArrayList<JLabel> liste_routes) {
 		this.liste_routes = liste_routes;
 	}
+	
+	public int getResultat_lancer() {
+		return resultat_lancer;
+	}
 
-	/** function test */
-	/*public void placer_points(int x,int y, int nb_points)
-	{
-		for(int i=0,j=x;i<nb_points;i++,j+=133)
-		{
-			 Graphics2D g = (Graphics2D) getGraphics();
-			 g.drawOval(j,y, 5, 5);  
-		}
-	}*/
+	public void setResultat_lancer(int resultat_lancer) {
+		this.resultat_lancer = resultat_lancer;
+	}
+	
+	/** FIN DECLARATION GETTERS ET SETTERS **/
 	/**
 	 * @param x -> coordonnées X 
 	 * @param y -> Coordonnées Y
@@ -464,10 +481,11 @@ public class Plateau extends JFrame {
 		ArrayList<JLabel> liste_jlab = new ArrayList<JLabel>();
 		for(int i=0,j=x;i<nb_cases;i++,j+=133)
 		{
-			int valeur = M_plateau.alea(2, 5);
+			int valeur = M_plateau.alea(1, 5);
 			String image = "" ;
 			switch(valeur)
 			{
+			case 1 : image = "pature" ; break ;
 			case 2 : image = "foret" ; break ;
 			case 3 : image = "champ" ; break ;
 			case 4 : image = "colline" ; break ; 
@@ -479,9 +497,9 @@ public class Plateau extends JFrame {
 				main.modele_plat.editer_cases(i+1, ligne, valeur);
 			ImageIcon im ;
 			if(nb_cases == 5 && i==2 )
-				im = new ImageIcon(".\\IMG\\desert.gif");
+				im = new ImageIcon(".\\IMG\\Terrain\\desert.png");
 			else
-				im = new ImageIcon(".\\IMG\\" + image + ".gif");
+				im = new ImageIcon(".\\IMG\\Terrain\\" + image + ".png");
 			
 			im = new ImageIcon(im.getImage().getScaledInstance(129, 168,Image.SCALE_DEFAULT));
 			contentPane.setLayout(null);
@@ -520,14 +538,12 @@ public class Plateau extends JFrame {
 	        lancer = new Thread() {
 				int f1=0;
 				int f2=0;
-				//int s=0;
 				int i=0;
 				
 	            public void run() {
 	            	while(i < 20){
 	            		faceD1.removeAll();
 	            		faceD2.removeAll();
-	            	//	message_des.setText("");
 					int d1 = (int) (Math.random() * 5 );
 					int d2 = (int) (Math.random() * 5 );
 					faceD1.setIcon(dés[d1]);
@@ -545,31 +561,18 @@ public class Plateau extends JFrame {
 	            	}
 	            	panel_des.remove(faceD1);
 					panel_des.remove(faceD2);
-					//panel_plateau.remove(panel_des);
 					resultat_lancer = f1+f2;
 					System.out.println(resultat_lancer);
 					main.modele_plat.resultat_des(resultat_lancer);
 	            }    
 	          };
 	          
-		lancer.start();
-			
+		lancer.start();	
 	}
 	
+	/** cette fonction va initialiser toutes les colonies du jeu, elles seront invisibles */
 	public void initialiser_colonies()
 	{
-		/*this.placer_points(332,128,3);
-		this.placer_points(265,169,4);
-		this.placer_points(265,253,4);
-		this.placer_points(198,294,5);
-		this.placer_points(198,378,5);
-		this.placer_points(131,420,6);
-		this.placer_points(131,506,6);
-		this.placer_points(198,546,5);
-		this.placer_points(198,633,5);
-		this.placer_points(265,673,4);
-		this.placer_points(265,758,4);
-		this.placer_points(331,798,3);*/
 			for(int i=0,x=327;i<3;i++,x+=133)
 			{
 				controleur.placer_colonies(Color.red, x , 128);
@@ -620,6 +623,7 @@ public class Plateau extends JFrame {
 			}
 	}
 	
+	/** cette fonction va intialiser toutes les routes du jeu, elles seront invisibles */
 	public void initialiser_routes()
 	{
 			/** / \ */
@@ -703,12 +707,167 @@ public class Plateau extends JFrame {
 			}
 			
 	}
-
-	public int getResultat_lancer() {
-		return resultat_lancer;
+	
+	/** cette fonction va initialiser tout les cases "mer" */
+	public void placer_elements_mer()
+	{
+		placer_cases_mer(218,18);
+		placer_cases_mer(351,18);
+		placer_cases_mer(484,18);
+		placer_cases_mer(617,18);
+		
+		placer_cases_mer(151,145);
+		placer_cases_mer(682,145);
+		
+		placer_cases_mer(85,272);
+		placer_cases_mer(750,272);
+		
+		placer_cases_mer(18,396);
+		placer_cases_mer(815,396);
+		
+		placer_cases_mer(85,521);
+		placer_cases_mer(750,521);
+		
+		placer_cases_mer(151,648);
+		placer_cases_mer(682,648);
+		
+		placer_cases_mer(218,775);
+		placer_cases_mer(351,775);
+		placer_cases_mer(484,775);
+		placer_cases_mer(617,775);
 	}
-
-	public void setResultat_lancer(int resultat_lancer) {
-		this.resultat_lancer = resultat_lancer;
+	
+	/** cette fonction va créer tout les jlabel pour placer les cases "mer" */
+	public void placer_cases_mer(int x, int y)
+	{
+		ImageIcon image_mer = new ImageIcon(".\\Img\\Terrain\\mer.png");
+		image_mer = new ImageIcon(image_mer.getImage().getScaledInstance(129, 168,Image.SCALE_DEFAULT));
+		contentPane.setLayout(null);
+		
+		JLabel label_mer = new JLabel(image_mer);
+		label_mer.setLayout(new BorderLayout());
+		label_mer.setMaximumSize(new Dimension(129, 168));
+		label_mer.setForeground(UIManager.getColor("Button.disabledShadow"));
+		label_mer.setBackground(UIManager.getColor("Button.disabledShadow"));
+		panel_plateau.add(label_mer);
+		label_mer.setBounds(x, y, 129, 168);
 	}
+	/*// le tour d'un joueur
+	public void jouer(Joueur j, Joueur j1,Joueur j2,Joueur j3,Joueur j4){
+	while (j.isNext() == false ){
+		if(j.getNom().equals(j1)){
+			
+		}
+		if(j.getNom().equals(j2)){
+			
+		}
+		if(j.getNom().equals(j3)){
+			
+		}
+		if(j.getNom().equals(j4)){
+			
+		}
+	}
+	}	
+	
+	/*
+public void lancer_partie() throws InterruptedException{
+		
+	  	// on initialise les élément de base du jeu (cartes, joueurs, pieces, ...)
+    	// je charger les éléments du plateau pour les stocker
+		
+    	M_plateau stmodele_plat = main.modele_plat;
+    	
+    	//on manipulera cette variable par la suite
+    	
+    	// ici on test avec des joueurs fictif
+    	Joueur j1 = new Joueur(1, "joueur 1", false);
+    	Joueur j2 = new Joueur(2, "joueur 2", false);
+    	Joueur j3 = new Joueur(3, "joueur 3", false);
+    	Joueur j4 = new Joueur(4, "joueur 4", false);
+    	
+    	
+    	
+		main.p.tour = 0;
+		main.p.cycle = 1;
+
+    	//tant que personne n'a gagner on continue
+    	while(main.p.win == false){
+    		
+    		switch (main.p.cycle){
+    		// le joueur 1
+    		  case 1:		
+    			main.p.tour++;
+    			main.p.setActif_J(j1);
+    			main.p.setActif_IA(null);
+    			setInfomenu("Tour n°"+main.p.tour);
+    			System.out.println("Tour n°"+main.p.tour);
+    		  	main.p.getActif_J().setActif(true);
+    		  	//méthode pour un tour de jeu
+        		jouer(main.p.getActif_J(),j1,j2,j3,j4);
+      		  	main.p.getActif_J().setNext(false);
+      		  	j1 = main.p.getActif_J();
+    		  	main.p.cycle++;
+        		if(main.p.getActif_J().getPoints() >= 10){main.p.win = true; main.p.winner = main.p.getActif_J().getNom();}
+      		  	main.p.setActif_J(null);
+        		break;
+ 		    
+    		    //le joueur2
+    		  case 2:
+    			main.p.tour++;
+      			main.p.setActif_J(j2);
+      			main.p.setActif_IA(null);
+    			setInfomenu("Tour n°"+main.p.tour);
+      			System.out.println("Tour n°"+main.p.tour);
+      		  	main.p.getActif_J().setActif(true);
+        		jouer(main.p.getActif_J(),j1,j2,j3,j4);
+        		main.p.getActif_J().setNext(false);
+        		j2 = main.p.getActif_J();
+      		  	main.p.cycle++;
+          		if(main.p.getActif_J().getPoints() >= 10){main.p.win = true; main.p.winner = main.p.getActif_J().getNom();}
+        		main.p.setActif_J(null);
+    		    break;
+    		    
+    		 // le joueur 3
+    		  case 3:
+    			main.p.tour++;
+      			main.p.setActif_J(j3);
+      			main.p.setActif_IA(null);
+    			setInfomenu("Tour n°"+main.p.tour);
+      			System.out.println("Tour n°"+main.p.tour);
+      		  	main.p.getActif_J().setActif(true);
+        		jouer(main.p.getActif_J(),j1,j2,j3,j4);
+        		main.p.getActif_J().setNext(false);
+        		j3 = main.p.getActif_J();
+      		  	main.p.cycle++;
+          		if(main.p.getActif_J().getPoints() >= 10){main.p.win = true; main.p.winner = main.p.getActif_J().getNom();}
+        		main.p.setActif_J(null);
+    		    break;
+    		    
+    		 // le joueur 4
+    		  case 4:
+    			main.p.tour++;
+      			main.p.setActif_J(j4);
+      			main.p.setActif_IA(null);
+    			setInfomenu("Tour n°"+main.p.tour);
+      		  	System.out.println("Tour n°"+main.p.tour);
+      		  	main.p.getActif_J().setActif(true);
+        		jouer(main.p.getActif_J(),j1,j2,j3,j4);
+        		main.p.getActif_J().setNext(false);
+        		j4 = main.p.getActif_J();
+      		  	main.p.cycle=1;
+          		if(main.p.getActif_J().getPoints() >= 10){main.p.win = true; main.p.winner = main.p.getActif_J().getNom();}
+        		main.p.setActif_J(null);
+      		    break;
+    		  default:
+    		}
+
+ 		
+    	}
+    	
+    	System.out.println("Le Joueur : "+main.p.winner+" à gagner !");
+    	
+
+	}*/
+	
 }

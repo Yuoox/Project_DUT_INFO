@@ -56,7 +56,7 @@ public class Inscription extends JFrame{
 			public void run() {
 				try {
 					Inscription frame = new Inscription();
-					frame.setTitle("Catane : Inscription");
+					frame.setTitle("Les colons de catane");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

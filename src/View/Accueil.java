@@ -59,6 +59,7 @@ public class Accueil extends JFrame{
 		controleur = new Controller(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1920,1080);
+		this.setTitle("Les colons de catane");
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

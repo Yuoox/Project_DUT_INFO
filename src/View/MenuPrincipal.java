@@ -50,7 +50,7 @@ public class MenuPrincipal extends JFrame {
 					//if(main.connected)
 					{
 						MenuPrincipal frame = new MenuPrincipal();
-						frame.setTitle("Catane : Menu principal");
+						frame.setTitle("Les colons de catane");
 						frame.setVisible(true);
 					}
 				//	else
@@ -158,6 +158,18 @@ public class MenuPrincipal extends JFrame {
 		
 		
 	}
+
+	public void setBouton_charger_partie(JButton bouton_charger_partie) {
+		this.bouton_charger_partie = bouton_charger_partie;
+	}
+
+
+
+	public void setBouton_regles(JButton bouton_regles) {
+		this.bouton_regles = bouton_regles;
+	}
+
+
 
 	public JButton getBouton_a_propos() {
 		return bouton_a_propos;

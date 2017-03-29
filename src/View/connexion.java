@@ -61,7 +61,7 @@ public class connexion extends JFrame {
 			public void run() {
 				try {
 					connexion frame = new connexion();
-					frame.setTitle("Catane : Connexion");
+					frame.setTitle("Les colons de catane");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
